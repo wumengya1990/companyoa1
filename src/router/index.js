@@ -126,7 +126,7 @@ export default new Router({
             {
               path: 'newProclamation.vue',
               name: 'newProclamation.vue',
-              component:resolve => require(['@/components/proclamation/newProclamation.vue'],resolve)
+              component:resolve => require(['@/components/proclamation/newProclamation.vue'],resolve),
             }
           ]
         }
