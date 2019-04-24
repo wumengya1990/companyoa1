@@ -108,6 +108,9 @@ img{border:0px;}
     .newNotice{
         position: absolute; left: 0; top:0; right: 0; bottom: 0; margin: auto; box-sizing: border-box; background: #FFF; overflow: hidden; overflow-y: auto;
         .newNoticeM{padding: 20px;
+            h4{ height: 40px; line-height:40px; font-weight:normal;}
+            .wenbenyu{ padding: 10px;}
+            .uploadBox{ padding: 10px; max-width: 500px;}
             .peoList{
                 border: 1px solid #dedede; border-radius: 3px; padding: 10px;
                 .choPeo{ display: inline-block; width: 50px; height: 50px; line-height: 50px; border: 1px dashed #dedede; text-align: center;
@@ -145,6 +148,7 @@ img{border:0px;}
                     h4{ font-weight: normal; color: #333; padding: 0 10px;}
                     .bts{ text-align: center;}
                     .readState{ text-align: center; display: block; color: #169232;}
+                    .singleMes{ text-align: center; display: block;}
                     .unRead{ color: #F30;}
                     dl{
                         padding: 5px 0; color: #666;
@@ -245,6 +249,32 @@ img{border:0px;}
 }
 
 .indexPlan{
+    @extend .indexNotice;
+    .see{
+        @extend .inbox;
+        .seeM{
+            @extend .inboxM;
+        }
+    }
+
+    .formulate{
+        @extend .inbox;
+        .formulateM{
+            @extend .inboxM;
+            .formulateCon{
+                h2{ text-align: center; font-size: 28px; padding: 20px 0;}
+                em{ display: block; padding: 10px 0;}
+                .Content{ overflow: hidden;}
+                .bts{ 
+                    text-align: center; padding: 20px 0 0;
+                    button{ width: 200px;}
+                }
+            }
+        }
+    }
+}
+
+.indexProclamation{
     @extend .indexNotice;
     .see{
         @extend .inbox;
