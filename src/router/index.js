@@ -127,6 +127,7 @@ export default new Router({
               path: 'editCustom/:id',
               name: 'editCustom',
               component:resolve => require(['@/components/system/editCustom'],resolve)
+           
             }
           ]
         },
