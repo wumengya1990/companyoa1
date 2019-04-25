@@ -35,7 +35,6 @@ export default {
                 {name:'校周计划',imgUrl:require('./../assets/images/APP_44.png'),routerLink:'/indexPlan'},
                 {name:'通知',imgUrl:require('./../assets/images/APP_49.png'),routerLink:'/indexNotice'},
                 {name:'公告',imgUrl:require('./../assets/images/APP_50.png'),routerLink:'/indexProclamation'},
-                {name:'OA系统设置',imgUrl:require('./../assets/images/APP_58.png'),routerLink:'/indexNotice'},
                 {name:'OA系统设置',imgUrl:require('./../assets/images/APP_58.png'),routerLink:'/indexSystem'}
             ]
         }

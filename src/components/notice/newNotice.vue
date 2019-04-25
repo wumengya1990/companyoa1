@@ -42,36 +42,42 @@
         <el-dialog title="提示" :visible.sync="dialogVisible" width="60%" :before-close="handleClose">
             <div class="layerBox">
                 <div class="shuttleBox">
+                    
                     <div class="leftBox">
-                        <div class="topbar"><el-input placeholder="输入关键字进行过滤" size="small" v-model="filterText"></el-input></div>
-                        <!-- 
-                            filter-node-methods筛选框内容 
-                            default-expand-al默认打开全部的节点
-                            node-key每个树节点用来作为唯一标识的属性，整棵树应该是唯一的
-
-                        -->
+                        <div class="topbar">
+                            <el-cascader :options="mechanismList" change-on-select size="small"></el-cascader>
+                        </div>
+                        
                         <div class="shuttleBoxN">
-                            <el-tree class="filter-tree" 
-                            :data="data2" 
-                            :props="defaultProps" 
-                            default-expand-all
-                            node-key="id" 
-                            :filter-node-method="filterNode" 
-                            show-checkbox 
-                            ref="tree">
-                            </el-tree>
+                            <div class="searchBox"><el-input placeholder="输入关键字进行过滤" size="small" v-model="filterText"></el-input></div>
+                            <div class="peoList">
+                            <!-- <el-checkbox :indeterminate="isIndeterminate" v-model="checkAll" @change="handleCheckAllChange">全选</el-checkbox> -->
+                            <div  class="peoListM">
+                            <el-checkbox-group v-model="checkedPeo" @change="handleCheckedPeoChange">
+                                <el-checkbox v-for="peo in peoList" :label="peo.uid" :key="peo.uid">{{peo.peoName}}</el-checkbox>
+                            </el-checkbox-group>
+                            </div>
+                            </div>
                         </div>
                     </div>
                     <div class="bts">
-                        <el-button type="primary" round icon="el-icon-arrow-left" @click="getCheckedNodes"></el-button>
-                        <el-button type="primary" round icon="el-icon-arrow-right" @click="uchoPeo"></el-button>
+                        <el-button :type="anniuLX" round icon="el-icon-arrow-left" @click="uchoPeo"></el-button>
+                        <el-button :type="anniuRX" round icon="el-icon-arrow-right" @click="choPeo"></el-button>
                     </div>
                     <div class="rightBox">
                         <div class="topbar"><h3>已选内容</h3></div>
                         <div class="shuttleBoxN">
-
+                            <div class="searchBox"><el-input placeholder="输入关键字进行过滤" size="small" v-model="filterText"></el-input></div>
+                            <div class="peoList">
+                                <div class="peoListM">
+                                    <el-checkbox-group v-model="hcheckedPeo" @change="handleCheckedPeoChange">
+                                        <el-checkbox v-for="hpeo in havepeoList" :label="hpeo.uid" :key="hpeo.uid">{{hpeo.peoName}}</el-checkbox>
+                                    </el-checkbox-group>
+                                </div>
+                            </div>
                         </div>
                     </div>
+
                 </div>
             </div>
             <span slot="footer" class="dialog-footer">
@@ -89,6 +95,12 @@ import {quillEditor} from "vue-quill-editor"; //调用编辑器
 import 'quill/dist/quill.core.css';
 import 'quill/dist/quill.snow.css';
 import 'quill/dist/quill.bubble.css';
+const peoOptions = [
+      {peoName:'张洋', uid:'u01', qjgid:'qjg01',xjgid:'xjg01',nxjgid:'njg01'},     //uid:用户ID； qjgid:校ID；xjgid：学校年级ID；nxjgid：学科组ID
+        {peoName:'王帅', uid:'u02', qjgid:'qjg01',xjgid:'xjg01',nxjgid:'njg01'},
+        {peoName:'赵承罡', uid:'u03', qjgid:'qjg01',xjgid:'xjg01',nxjgid:'njg01'},
+        {peoName:'孙政', uid:'u04', qjgid:'qjg01',xjgid:'xjg01',nxjgid:'njg01'}
+];
 export default {
     name:'newNotice',
     components:{
@@ -107,44 +119,32 @@ export default {
                 receiver:''
             },
             filterText: '',
-            data2: [{
-            id: 1,
-            label: '一级 1',
-            children: [{
-                id: 4,
-                label: '二级 1-1',
-                children: [{
-                id: 9,
-                label: '三级 1-1-1'
-                }, {
-                id: 10,
-                label: '三级 1-1-2'
-                }]
-            }]
-            }, {
-            id: 2,
-            label: '一级 2',
-            children: [{
-                id: 5,
-                label: '二级 2-1'
-            }, {
-                id: 6,
-                label: '二级 2-2',
-                children:[
-                    {
-                        id:611,
-                        label:'三级2-2-1'
-                    }
-                ]
-            }]
-            }, {
-            id: 3,
-            label: '一级 3',
-            children: [{
-                    id: 7,
-                    label: '二级 3-1'
-                }]
-            }],
+            mechanismList:[             //机构列表
+                {
+                    label:'徐州市第一中学',value:'qjg01',jgid:'qjg01',
+                    children:[
+                        {
+                            label:'高一年级组',value:'xjg01',jgid:'xjg01',
+                            children:[
+                                {label:'语文组',value:'njg01',jgid:'njg01'},
+                                {label:'数学组',value:'njg02',jgid:'njg02'},
+                                {label:'英语组',value:'njg03',jgid:'njg02'}
+                            ]
+                        }
+                        
+                    ]
+                }
+            ],
+            checkAll: false,
+            checkedPeo: [],
+            hcheckedPeo:[],
+            peoList: peoOptions,
+            huancunPeoList:[],
+            havepeoList:[],
+            anniuLX:'',
+            anniuRX:'',
+            isIndeterminate: false,
+
             defaultProps: {
             children: 'children',
             label: 'label'
@@ -180,12 +180,40 @@ export default {
             })
             .catch(_ => {});
         },
-        getCheckedNodes(){
-            console.log(this.$refs.tree.getCheckedNodes());
+        choPeo(){
+            let me = this;
+            me.havepeoList = me.huancunPeoList;
         },
         uchoPeo(){
             
+        },
+        
+        handleCheckedPeoChange(value) {
+            let me = this;
+            console.log(value);
+            me.huancunPeoList=[];
+            let checkedCount = value.length;
+            for(var i=0,len=value.length;i<len;i++){
+                let csid = value[i];
+                for(var j = 0, lenn=me.peoList.length;j<lenn;j++){
+                    if(csid==me.peoList[j].uid){
+                        me.huancunPeoList.push(me.peoList[j]);
+                    }
+                }
+            }
+            let sd = new Set(me.huancunPeoList)
+            me.huancunPeoList=[];
+            me.huancunPeoList.push(...sd);
+            console.log(me.huancunPeoList);
+
+            if(me.huancunPeoList.length!=0){
+                me.anniuRX = 'primary';
+            }else{
+                me.anniuRX = '';
+            }
+            
         }
+
     }
 }
 </script>

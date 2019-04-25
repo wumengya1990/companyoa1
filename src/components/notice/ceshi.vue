@@ -1,93 +1,36 @@
 <template>
     <div class="ceshi">
-        <el-tree
-        :data="data2"
-        show-checkbox
-        default-expand-all
-        node-key="id"
-        ref="tree"
-        highlight-current
-        :props="defaultProps">
-        </el-tree>
-
-        <div class="buttons">
-            <el-button @click="getCheckedNodes">通过 node 获取</el-button>
-            <el-button @click="getCheckedKeys">通过 key 获取</el-button>
-            <el-button @click="setCheckedNodes">通过 node 设置</el-button>
-            <el-button @click="setCheckedKeys">通过 key 设置</el-button>
-            <el-button @click="resetChecked">清空</el-button>
-        </div>
+       <el-checkbox :indeterminate="isIndeterminate" v-model="checkAll" @change="handleCheckAllChange">全选</el-checkbox>
+        <div style="margin: 15px 0;"></div>
+        <el-checkbox-group v-model="checkedCities" @change="handleCheckedCitiesChange">
+          <el-checkbox v-for="city in cities" :label="city" :key="city">{{city}}</el-checkbox>
+        </el-checkbox-group>
     </div>
 </template>
 
 <script>
+const cityOptions = ['上海', '北京', '广州', '深圳'];
 export default {
     name:'ceshi',
     data() {
         return {
-            data2: [{
-                id: 1,
-                label: '一级 1',
-                children: [{
-                    id: 1,
-                    label: '二级 1-1',
-                        children: [{
-                        id: 2,
-                        label: '三级 1-1-1'
-                        }, {
-                        id: 3,
-                        label: '三级 1-1-2'
-                        }]
-                }]
-                }, {
-                id: 2,
-                label: '一级 2',
-                children: [{
-                    id: 1,
-                    label: '二级 2-1'
-                }, {
-                    id: 2,
-                    label: '二级 2-2'
-                }]
-                }, {
-                id: 3,
-                label: '一级 3',
-                children: [{
-                    id: 1,
-                    label: '二级 3-1'
-                }, {
-                    id: 2,
-                    label: '二级 3-2'
-                }]
-                }],
-                defaultProps: {
-                children: 'children',
-                label: 'label'
-                }
+            checkAll: false,
+            checkedCities: ['上海', '北京'],
+            cities: cityOptions,
+            isIndeterminate: false
         }
     },
     methods:{
-        getCheckedNodes() {
-        console.log(this.$refs.tree.getCheckedNodes());
+       handleCheckAllChange(val) {
+        this.checkedCities = val ? cityOptions : [];
+        this.isIndeterminate = false;
       },
-      getCheckedKeys() {
-        console.log(this.$refs.tree.getCheckedKeys());
-      },
-      setCheckedNodes() {
-        this.$refs.tree.setCheckedNodes([{
-          id: 5,
-          label: '二级 2-1'
-        }, {
-          id: 9,
-          label: '三级 1-1-1'
-        }]);
-      },
-      setCheckedKeys() {
-        this.$refs.tree.setCheckedKeys([3]);
-      },
-      resetChecked() {
-        this.$refs.tree.setCheckedKeys([]);
+      handleCheckedCitiesChange(value) {
+        let checkedCount = value.length;
+        this.checkAll = checkedCount === this.cities.length;
+        this.isIndeterminate = checkedCount > 0 && checkedCount < this.cities.length;
       }
+       
     }
 }
 </script>
