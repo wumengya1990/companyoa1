@@ -27,6 +27,23 @@
                 <h2>{{valueSemester}}{{valueWeek}}周计划制定</h2>
                 <ul>
                     <li>
+                        <em>设置时间</em>
+                        <div class="Content">
+                            <el-date-picker
+                            v-model="value1"
+                            type="date"
+                            :picker-options="pickerOptions0"
+                            placeholder="选择日期">
+                            </el-date-picker>
+                            <el-date-picker
+                                v-model="value2"
+                                type="date"
+                                :picker-options="pickerOptions1"
+                                placeholder="选择日期">
+                            </el-date-picker>
+                        </div>
+                    </li>
+                    <li>
                         <em>正文内容</em>
                         <div class="Content">
                             <quill-editor 
@@ -60,6 +77,30 @@ export default {
     },
     data() {
         return {
+            value1:'',
+            value2:'',
+            pickerOptions0: {
+                disabledDate: (time) => {
+                    if (this.value2 != "") {
+                        // return time.getTime() < Date.now()-8.64e7 || time.getTime() > this.value2;
+                        return time.getTime() > this.value2;
+                    } else {
+                        return time.getTime() > Date.now()-8.64e7;
+                    }
+ 
+                }
+            },
+            pickerOptions1: {
+                disabledDate: (time) => {
+                    if(this.value1 != ""){
+                         //return time.getTime() < this.value1 || time.getTime() < Date.now()-8.64e7;
+                         return time.getTime() < this.value1 || time.getTime() > Date.now()-8.64e7;
+                    }else{
+                        return time.getTime() > Date.now()-8.64e7;
+                    }
+                   
+                }
+            },
             valueSemester:'',
             valueWeek:'',
             optionsSemester:[

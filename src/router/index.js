@@ -96,6 +96,44 @@ export default new Router({
       ]
     },
     {
+      path:'/indexProclamation',
+      name:'indexProclamation',
+      component:resolve => require(['@/components/proclamation/indexProclamation'],resolve),
+      redirect:'/indexProclamation/receive',
+      children:[
+        {
+          path:'receive',
+          name:'receive',
+          component:resolve => require(['@/components/proclamation/receive'],resolve),
+          children:[
+            {
+              path:'receivedetails',
+              name:'receivedetails',
+              component:resolve => require(['@/components/proclamation/details'],resolve)
+            }
+          ]
+        },
+        {
+          path:'sendout',
+          name:'sendout',
+          component:resolve => require(['@/components/proclamation/sendout'],resolve),
+          children:[
+            {
+              path:'sendoutdetails',
+              name:'sendoutdetails',
+              component:resolve => require(['@/components/proclamation/details'],resolve)
+            },
+            {
+              path: 'newProclamation.vue',
+              name: 'newProclamation.vue',
+              component:resolve => require(['@/components/proclamation/newProclamation.vue'],resolve)
+            }
+          ]
+        }
+      ]
+      
+    },
+    {
       path: '/indexSystem',
       name: 'indexSystem',
       component:resolve => require(['@/components/system/indexSystem'],resolve),

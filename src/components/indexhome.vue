@@ -10,6 +10,7 @@
             <el-tooltip class="item" effect="dark" content="个人设置" placement="right">
                 <a><span class="icon iconfont iconyonghu1"></span></a>
             </el-tooltip>
+            
         </div>
 
         <div class="desktop">
@@ -33,6 +34,8 @@ export default {
             appList:[
                 {name:'校周计划',imgUrl:require('./../assets/images/APP_44.png'),routerLink:'/indexPlan'},
                 {name:'通知',imgUrl:require('./../assets/images/APP_49.png'),routerLink:'/indexNotice'},
+                {name:'公告',imgUrl:require('./../assets/images/APP_50.png'),routerLink:'/indexProclamation'},
+                {name:'OA系统设置',imgUrl:require('./../assets/images/APP_58.png'),routerLink:'/indexNotice'},
                 {name:'OA系统设置',imgUrl:require('./../assets/images/APP_58.png'),routerLink:'/indexSystem'}
             ]
         }

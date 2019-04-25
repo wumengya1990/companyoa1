@@ -5,7 +5,15 @@
                 <el-tab-pane label="全部" name="first">
                     <div class="tabContent">
                         <div class="topTool">
-                            <el-input v-model="searchInput" style="width:300px; margin:0 5px 0 0;" size="small" placeholder="请输入内容" clearable></el-input><el-button size="small" type="primary">搜索</el-button>
+                            <el-input v-model="searchInput" style="width:300px; margin:0 5px 0 0;" size="small" placeholder="请输入内容" clearable></el-input>
+                            <el-date-picker
+                                v-model="yearList"
+                                align="right"
+                                type="year"
+                                size="small"
+                                placeholder="选择年">
+                            </el-date-picker>
+                            <el-button size="small" type="primary">搜索</el-button>
                         </div>
                         <div class="listMain" :style="{height:scHeight}">
                             <ul>
@@ -69,7 +77,15 @@
                 <el-tab-pane label="未读" name="second">
                     <div class="tabContent">
                         <div class="topTool">
-                            <el-input v-model="searchInput" style="width:300px; margin:0 5px 0 0;" size="small" placeholder="请输入内容" clearable></el-input><el-button size="small" type="primary">搜索</el-button>
+                            <el-input v-model="searchInput" style="width:300px; margin:0 5px 0 0;" size="small" placeholder="请输入内容" clearable></el-input>
+                            <el-date-picker
+                                v-model="yearList"
+                                align="right"
+                                type="year"
+                                size="small"
+                                placeholder="选择年">
+                            </el-date-picker>
+                            <el-button size="small" type="primary">搜索</el-button>
                         </div>
                         <div class="listMain" :style="{height:scHeight}">
                             <ul>
@@ -133,7 +149,15 @@
                 <el-tab-pane label="已读" name="third">
                     <div class="tabContent">
                         <div class="topTool">
-                            <el-input v-model="searchInput" style="width:300px; margin:0 5px 0 0;" size="small" placeholder="请输入内容" clearable></el-input><el-button size="small" type="primary">搜索</el-button>
+                            <el-input v-model="searchInput" style="width:300px; margin:0 5px 0 0;" size="small" placeholder="请输入内容" clearable></el-input>
+                            <el-date-picker
+                                v-model="yearList"
+                                align="right"
+                                type="year"
+                                size="small"
+                                placeholder="选择年">
+                            </el-date-picker>
+                            <el-button size="small" type="primary">搜索</el-button>
                         </div>
                         <div class="listMain" :style="{height:scHeight}">
                             <ul>
@@ -210,6 +234,12 @@ export default {
             searchInput:'',
             currentPage:1,
             scHeight:'',
+            yearList:'2019',
+            // getyear:{
+            //     var dqdate = new Date;
+            //     var year = dqdate.getFullYear();
+            //     return year;
+            // },
             noticeList:[
                 {
                     title:'通知标题很长是为了测试，再很长的内容下的显示效果，长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长',
@@ -290,6 +320,7 @@ export default {
         this.setheight();
     },
     methods:{
+        
         handleSizeChange(val) {
         console.log(`每页 ${val} 条`);
       },
