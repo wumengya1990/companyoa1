@@ -39,13 +39,13 @@
             <div class="bts"><el-button type="primary">提交</el-button><el-button>取消</el-button></div>
         </div>
 
-        <el-dialog title="提示" :visible.sync="dialogVisible" width="60%" :before-close="handleClose">
+        <el-dialog title="提示" :visible.sync="dialogVisible" width="800px" :before-close="handleClose">
             <div class="layerBox">
                 <div class="shuttleBox">
                     
                     <div class="leftBox">
                         <div class="topbar">
-                            <el-cascader :options="mechanismList" change-on-select size="small"></el-cascader>
+                            <el-cascader :options="mechanismList" change-on-select style="width:100%;" size="small"></el-cascader>
                         </div>
                         
                         <div class="shuttleBoxN">
@@ -54,7 +54,7 @@
                             <!-- <el-checkbox :indeterminate="isIndeterminate" v-model="checkAll" @change="handleCheckAllChange">全选</el-checkbox> -->
                             <div  class="peoListM">
                             <el-checkbox-group v-model="checkedPeo" @change="handleCheckedPeoChange">
-                                <el-checkbox v-for="peo in peoList" :label="peo.uid" :key="peo.uid">{{peo.peoName}}</el-checkbox>
+                                <el-checkbox v-for="peo in peoList" :label="peo.uid" :key="peo.uid"><span style="display:inline-block; width:60px;">{{peo.peoName}}</span>({{peo.schoolName}}-{{peo.gradeName}}-{{peo.groupName}})</el-checkbox>
                             </el-checkbox-group>
                             </div>
                             </div>
@@ -70,8 +70,8 @@
                             <div class="searchBox"><el-input placeholder="输入关键字进行过滤" size="small" v-model="filterText"></el-input></div>
                             <div class="peoList">
                                 <div class="peoListM">
-                                    <el-checkbox-group v-model="hcheckedPeo" @change="handleCheckedPeoChange">
-                                        <el-checkbox v-for="hpeo in havepeoList" :label="hpeo.uid" :key="hpeo.uid">{{hpeo.peoName}}</el-checkbox>
+                                    <el-checkbox-group v-model="hcheckedPeo" @change="handleCheckedPeoChangeBack">
+                                        <el-checkbox v-for="hpeo in havepeoList" :label="hpeo.uid" :key="hpeo.uid"><span style="display:inline-block; width:60px;">{{hpeo.peoName}}</span>({{hpeo.schoolName}}-{{hpeo.gradeName}}-{{hpeo.groupName}})</el-checkbox>
                                     </el-checkbox-group>
                                 </div>
                             </div>
@@ -96,11 +96,11 @@ import 'quill/dist/quill.core.css';
 import 'quill/dist/quill.snow.css';
 import 'quill/dist/quill.bubble.css';
 const peoOptions = [
-      {peoName:'张洋', uid:'u01', qjgid:'qjg01',xjgid:'xjg01',nxjgid:'njg01'},     //uid:用户ID； qjgid:校ID；xjgid：学校年级ID；nxjgid：学科组ID
-        {peoName:'王帅', uid:'u02', qjgid:'qjg01',xjgid:'xjg01',nxjgid:'njg01'},
-        {peoName:'赵承罡', uid:'u03', qjgid:'qjg01',xjgid:'xjg01',nxjgid:'njg01'},
-        {peoName:'孙政', uid:'u04', qjgid:'qjg01',xjgid:'xjg01',nxjgid:'njg01'}
-];
+        {peoName:'张洋', uid:'u01', qjgid:'qjg01', xjgid:'xjg01',nxjgid:'njg01', schoolName:'徐州市第一中学',gradeName:'高一年级', groupName:'语文组'},     //uid:用户ID； qjgid:校ID；xjgid：学校年级ID；nxjgid：学科组ID
+        {peoName:'王帅', uid:'u02', qjgid:'qjg01',xjgid:'xjg01',nxjgid:'njg01', schoolName:'徐州市第一中学',gradeName:'高一年级', groupName:'语文组'},
+        {peoName:'赵承罡', uid:'u03', qjgid:'qjg01',xjgid:'xjg01',nxjgid:'njg01', schoolName:'徐州市第一中学',gradeName:'高一年级', groupName:'语文组'},
+        {peoName:'孙政', uid:'u04', qjgid:'qjg01',xjgid:'xjg01',nxjgid:'njg01', schoolName:'徐州市第一中学',gradeName:'高一年级', groupName:'语文组'}
+        ];
 export default {
     name:'newNotice',
     components:{
@@ -121,10 +121,24 @@ export default {
             filterText: '',
             mechanismList:[             //机构列表
                 {
-                    label:'徐州市第一中学',value:'qjg01',jgid:'qjg01',
+                    label:'徐州市第二中学',value:'qjg01',jgid:'qjg01',
                     children:[
                         {
                             label:'高一年级组',value:'xjg01',jgid:'xjg01',
+                            children:[
+                                {label:'语文组',value:'njg01',jgid:'njg01'},
+                                {label:'数学组',value:'njg02',jgid:'njg02'},
+                                {label:'英语组',value:'njg03',jgid:'njg02'}
+                            ]
+                        }
+                        
+                    ]
+                },
+                {
+                    label:'徐州市第一中学',value:'qjg01',jgid:'qjg01',
+                    children:[
+                        {
+                            label:'高二年级组',value:'xjg01',jgid:'xjg01',
                             children:[
                                 {label:'语文组',value:'njg01',jgid:'njg01'},
                                 {label:'数学组',value:'njg02',jgid:'njg02'},
@@ -138,7 +152,7 @@ export default {
             checkAll: false,
             checkedPeo: [],
             hcheckedPeo:[],
-            peoList: peoOptions,
+            peoList:{},
             huancunPeoList:[],
             havepeoList:[],
             anniuLX:'',
@@ -155,6 +169,9 @@ export default {
         filterText(val) {
             this.$refs.tree.filter(val);
         }
+    },
+    mounted() {
+        this.setData();
     },
     methods:{
         filterNode(value, data) {
@@ -180,11 +197,51 @@ export default {
             })
             .catch(_ => {});
         },
+        setData(){
+            // console.log(peoOptions);
+            for(var i=0, len=peoOptions.length;i<len; i++){
+                peoOptions[i].zhid = peoOptions[i].uid+peoOptions[i].qjgid+peoOptions[i].xjgid+peoOptions[i].nxjgid;
+            }
+            this.peoList = peoOptions;
+            // console.log(this.peoList);
+
+        },
         choPeo(){
+            let that = this;
+            let c = that.havepeoList.concat(that.huancunPeoList);
+            that.havepeoList = c;
+            that.anniuRX = '';
+            for(var i=0; i < that.havepeoList.length; i++){
+                var hzhid = that.havepeoList[i].zhid;
+                console.log(hzhid+"已选");
+                that.dropLeft(hzhid);
+                
+                // for(var n=0 ; i<that.peoList.length;n++){
+                //     // debugger
+                //     let yuid=that.peoList[n].uid;
+                //     let yqjgid = that.peoList[n].qjgid;
+                //     let yxjgid = that.peoList[n].xjgid;
+                //     let ynxjgid = that.peoList[n].nxjgid;
+                //     console.log(yuid+"未选");
+                //     if( huid==yuid && hqjgid==yqjgid && hxjgid==yxjgid && hnxjgid==ynxjgid){
+                //         that.peoList.splice(n,1);
+                //     }
+                // }
+                
+            }
+        },
+        dropLeft(cid){                  //删除左侧
             let me = this;
-            me.havepeoList = me.huancunPeoList;
+            for(var n=0; n<me.peoList.length; n++){
+                if(cid == me.peoList[n].zhid){
+                    me.peoList.splice(n,1);
+                }
+            }
         },
         uchoPeo(){
+            
+        },
+        isNull(obg){
             
         },
         
@@ -204,14 +261,43 @@ export default {
             let sd = new Set(me.huancunPeoList)
             me.huancunPeoList=[];
             me.huancunPeoList.push(...sd);
-            console.log(me.huancunPeoList);
+           
 
             if(me.huancunPeoList.length!=0){
                 me.anniuRX = 'primary';
             }else{
                 me.anniuRX = '';
             }
+             console.log(me.huancunPeoList);
+        },
+
+        handleCheckedPeoChangeBack(value) {
+           
+            let me = this;
             
+            me.huancunPeoList=[];
+            // let checkedCount = value.length;
+            console.log(me.havepeoList);
+            for(var i=0,len=value.length;i<len;i++){
+                let csid = value[i];
+                
+                for(var j = 0, lenn=me.havepeoList.length;j<lenn;j++){
+                    if(csid==me.havepeoList[j].uid){
+                        me.huancunPeoList.push(me.havepeoList[j]);
+                    }
+                }
+            }
+            let sd = new Set(me.huancunPeoList)
+            me.huancunPeoList=[];
+            me.huancunPeoList.push(...sd);
+           
+
+            if(me.huancunPeoList.length!=0){
+                me.anniuLX = 'primary';
+            }else{
+                me.anniuLX = '';
+            }
+             console.log(me.huancunPeoList+"哈哈");
         }
 
     }

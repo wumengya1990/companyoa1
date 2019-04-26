@@ -231,11 +231,11 @@ img{border:0px;}
 
 .layerBox{
     height: 400px; position: relative;
-    .leftBox{ position: absolute; left: 0; top: 0; right: auto; bottom: 0; border:1px solid #dedede; width: 250px;}
-    .rightBox{ position: absolute; left: auto; top: 0; right: 0; bottom: 0; border:1px solid #dedede; width: 250px;}
+    .leftBox{ position: absolute; left: 0; top: 0; right: auto; bottom: 0; border:1px solid #dedede; width: 320px;}
+    .rightBox{ position: absolute; left: auto; top: 0; right: 0; bottom: 0; border:1px solid #dedede; width: 320px;}
     .shuttleBox{
         @extend .posA,.posCenter;
-        width: 600px;
+        width: 750px;
         .bts{ 
             position: absolute; width:60px; height:120px; left: 0; top: 0; right: 0; bottom: 0; margin: auto; text-align: center;
             button{ width: 40px; height: 40px; text-align: center; line-height: 40px; padding: 0; border-radius: 50%; margin:5px auto;}
@@ -246,7 +246,7 @@ img{border:0px;}
             .peoList{
                 @extend .posA,.posCenter; padding:0 10px; top: 52px;
                 .peoListM{ 
-                    @extend .posA,.posCenter; top:0; padding:0 10px; overflow: hidden; overflow-y: auto;
+                    @extend .posA,.posCenter; top:0; padding:0 10px; overflow: auto;
                     label{ display: block; padding: 2px 0;}
                 }   
             }
