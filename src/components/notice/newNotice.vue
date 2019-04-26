@@ -277,7 +277,7 @@ export default {
             
             me.huancunPeoList=[];
             // let checkedCount = value.length;
-            console.log(me.havepeoList);
+            console.log(checkedCount);
             for(var i=0,len=value.length;i<len;i++){
                 let csid = value[i];
                 
