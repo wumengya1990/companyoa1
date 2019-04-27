@@ -21,6 +21,7 @@
                 </el-form-item>
                 <el-form-item label="接收人员">
                    <div class="peoList">
+                       <span v-for="m in showPeoList" :key="m.uid">{{m.peoName}}</span>
                        <a class="choPeo" @click="dialogVisible = true"><i class="icon iconfont iconrenyuanzengjia"></i></a>
                    </div>
                 </el-form-item>
@@ -36,7 +37,7 @@
                 @focus="onEditorFocus($event)"
                 @change="onEditorChange($event)">
             </quill-editor>
-            <div class="bts"><el-button type="primary">提交</el-button><el-button>取消</el-button></div>
+            <div class="bts"><el-button type="primary">提交</el-button><el-button @click="backPage">取消</el-button></div>
         </div>
 
         <el-dialog title="提示" :visible.sync="dialogVisible" width="800px" :before-close="handleClose">
@@ -82,7 +83,7 @@
             </div>
             <span slot="footer" class="dialog-footer">
                 <el-button @click="dialogVisible = false">取 消</el-button>
-                <el-button type="primary" @click="dialogVisible = false">确 定</el-button>
+                <el-button type="primary" @click="tijiao">确 定</el-button>
             </span>
         </el-dialog>
         
@@ -157,8 +158,8 @@ export default {
             havepeoList:[],
             anniuLX:'',
             anniuRX:'',
+            showPeoList:[],
             isIndeterminate: false,
-
             defaultProps: {
             children: 'children',
             label: 'label'
@@ -174,6 +175,9 @@ export default {
         this.setData();
     },
     methods:{
+        backPage(){
+            this.$router.back(-1)
+        },
         filterNode(value, data) {
             if (!value) return true;
             return data.label.indexOf(value) !== -1;
@@ -215,19 +219,6 @@ export default {
                 var hzhid = that.havepeoList[i].zhid;
                 console.log(hzhid+"已选");
                 that.dropLeft(hzhid);
-                
-                // for(var n=0 ; i<that.peoList.length;n++){
-                //     // debugger
-                //     let yuid=that.peoList[n].uid;
-                //     let yqjgid = that.peoList[n].qjgid;
-                //     let yxjgid = that.peoList[n].xjgid;
-                //     let ynxjgid = that.peoList[n].nxjgid;
-                //     console.log(yuid+"未选");
-                //     if( huid==yuid && hqjgid==yqjgid && hxjgid==yxjgid && hnxjgid==ynxjgid){
-                //         that.peoList.splice(n,1);
-                //     }
-                // }
-                
             }
         },
         dropLeft(cid){                  //删除左侧
@@ -241,10 +232,6 @@ export default {
         uchoPeo(){
             
         },
-        isNull(obg){
-            
-        },
-        
         handleCheckedPeoChange(value) {
             let me = this;
             console.log(value);
@@ -298,6 +285,10 @@ export default {
                 me.anniuLX = '';
             }
              console.log(me.huancunPeoList+"哈哈");
+        },
+        tijiao(){
+            this.showPeoList = this.havepeoList;
+            this.dialogVisible = false;
         }
 
     }

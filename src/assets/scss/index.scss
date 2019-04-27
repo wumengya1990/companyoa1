@@ -112,8 +112,9 @@ img{border:0px;}
             .wenbenyu{ padding: 10px;}
             .uploadBox{ padding: 10px; max-width: 500px;}
             .peoList{
-                border: 1px solid #dedede; border-radius: 3px; padding: 10px;
-                .choPeo{ display: inline-block; width: 50px; height: 50px; line-height: 50px; border: 1px dashed #dedede; text-align: center;
+                border: 1px solid #dedede; border-radius: 3px; padding: 10px; font-size: 0;
+                span{ display: inline-block; width: 60px; height: 40px; line-height: 40px; margin: 0 5px 0 0; background: #1b7ce2; border: 1px solid #1b7ce2; text-align: center; vertical-align: top; color: #FFF; font-size: 14px; white-space: nowrap; text-overflow: ellipsis; overflow: hidden;}
+                .choPeo{ display: inline-block; width: 40px; height: 40px; line-height: 40px; border: 1px dashed #dedede; text-align: center;
                     i{ font-size:28px;}
                     &:hover{ 
                         color: #66b1ff;  border: 1px solid #66b1ff;
@@ -365,7 +366,8 @@ img{border:0px;}
         .newNoticeM{padding: 20px;
             .peoList{
                 border: 1px solid #dedede; border-radius: 3px; padding: 10px;
-                .choPeo{ display: inline-block; width: 50px; height: 50px; line-height: 50px; border: 1px dashed #dedede; text-align: center;
+                span{ display: inline-block;}
+                .choPeo{ display: inline-block; width: 30px; height: 30px; line-height: 30px; border: 1px dashed #dedede; text-align: center;
                     i{ font-size:28px;}
                     &:hover{ 
                         color: #66b1ff;  border: 1px solid #66b1ff;
