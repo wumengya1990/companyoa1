@@ -21,7 +21,10 @@
                 </el-form-item>
                 <el-form-item label="接收人员">
                    <div class="peoList">
-                       <span v-for="m in showPeoList" :key="m.uid">{{m.peoName}}</span>
+                       <span v-for="(m,index) in showPeoList" :key="m.uid">
+                           {{m.peoName}}
+                           <em @click="dropPeo(index)">关闭</em>
+                        </span>
                        <a class="choPeo" @click="dialogVisible = true"><i class="icon iconfont iconrenyuanzengjia"></i></a>
                    </div>
                 </el-form-item>
@@ -46,11 +49,11 @@
                     
                     <div class="leftBox">
                         <div class="topbar">
-                            <el-cascader :options="mechanismList" change-on-select style="width:100%;" size="small"></el-cascader>
+                            <el-cascader :options="mechanismList" change-on-select style="width:100%;" @change="lianjiCho" size="small"></el-cascader>
                         </div>
                         
                         <div class="shuttleBoxN">
-                            <div class="searchBox"><el-input placeholder="输入关键字进行过滤" size="small" v-model="filterText"></el-input></div>
+                            <div class="searchBox"><el-input placeholder="输入关键字进行过滤" size="small" @change="leftSearch" v-model="filterTextL"></el-input></div>
                             <div class="peoList">
                             <!-- <el-checkbox :indeterminate="isIndeterminate" v-model="checkAll" @change="handleCheckAllChange">全选</el-checkbox> -->
                             <div  class="peoListM">
@@ -68,7 +71,7 @@
                     <div class="rightBox">
                         <div class="topbar"><h3>已选内容</h3></div>
                         <div class="shuttleBoxN">
-                            <div class="searchBox"><el-input placeholder="输入关键字进行过滤" size="small" v-model="filterText"></el-input></div>
+                            <div class="searchBox"><el-input placeholder="输入关键字进行过滤" size="small" v-model="filterTextR"></el-input></div>
                             <div class="peoList">
                                 <div class="peoListM">
                                     <el-checkbox-group v-model="hcheckedPeo" @change="handleCheckedPeoChangeBack">
@@ -119,8 +122,7 @@ export default {
                 importance:'',
                 receiver:''
             },
-            filterText: '',
-            mechanismList:[             //机构列表
+            mechanismList:[                     //机构列表
                 {
                     label:'徐州市第二中学',value:'qjg01',jgid:'qjg01',
                     children:[
@@ -151,18 +153,21 @@ export default {
                 }
             ],
             checkAll: false,
-            checkedPeo: [],
-            hcheckedPeo:[],
-            peoList:{},
-            huancunPeoList:[],
-            havepeoList:[],
-            anniuLX:'',
-            anniuRX:'',
-            showPeoList:[],
-            isIndeterminate: false,
+            lianjizancun:'',                //联机框选择的内容
+            filterTextL: '',                //左侧搜索框搜索内容
+            filterTextR: '',                //右侧搜索框搜索内容
+            checkedPeo: [],                 //全部人员点击多选框返回内容
+            hcheckedPeo:[],                 //已选人员点击多选框返回内容
+            peoList:[],                     //弹层左侧人员列表
+            huancunPeoList:[],              //暂存的人员
+            havepeoList:[],                 //弹层右侧已选人员列表        
+            anniuLX:'',                     //向左按钮类型
+            anniuRX:'',                     //向右按钮类型
+            showPeoList:[],                 //在接收人员框内的人员列表
+            isIndeterminate: false,         //多选框组内确定样式配置
             defaultProps: {
-            children: 'children',
-            label: 'label'
+                children: 'children',
+                label: 'label'
             }
         }
     },
@@ -210,6 +215,20 @@ export default {
             // console.log(this.peoList);
 
         },
+        lianjiCho(value){
+            let that = this;
+            that.lianjizancun = value[value.length-1];
+            console.log(that.lianjizancun);
+            that.filterTextL='';
+            that.loadAllPeopleLeft();
+        },
+        leftSearch(value){
+            let that = this;
+            console.log(that.common.isNullorNull(value))
+        },
+        loadAllPeopleLeft(){
+
+        },
         choPeo(){
             let that = this;
             let c = that.havepeoList.concat(that.huancunPeoList);
@@ -230,7 +249,15 @@ export default {
             }
         },
         uchoPeo(){
-            
+            let that = this;
+        },
+        dropRight(cid){                  //删除左侧
+            let me = this;
+            for(var n=0; n<me.peoList.length; n++){
+                if(cid == me.peoList[n].zhid){
+                    me.peoList.splice(n,1);
+                }
+            }
         },
         handleCheckedPeoChange(value) {
             let me = this;
@@ -263,7 +290,7 @@ export default {
             let me = this;
             
             me.huancunPeoList=[];
-            // let checkedCount = value.length;
+            let checkedCount = value.length;
             console.log(checkedCount);
             for(var i=0,len=value.length;i<len;i++){
                 let csid = value[i];
@@ -284,12 +311,17 @@ export default {
             }else{
                 me.anniuLX = '';
             }
-             console.log(me.huancunPeoList+"哈哈");
+             console.log(me.huancunPeoList);
         },
         tijiao(){
             this.showPeoList = this.havepeoList;
             this.dialogVisible = false;
+        },
+        dropPeo(suoyin){
+            let that = this;
+            that.showPeoList.splice(suoyin,1);
         }
+        
 
     }
 }

@@ -113,7 +113,16 @@ img{border:0px;}
             .uploadBox{ padding: 10px; max-width: 500px;}
             .peoList{
                 border: 1px solid #dedede; border-radius: 3px; padding: 10px; font-size: 0;
-                span{ display: inline-block; width: 60px; height: 40px; line-height: 40px; margin: 0 5px 0 0; background: #1b7ce2; border: 1px solid #1b7ce2; text-align: center; vertical-align: top; color: #FFF; font-size: 14px; white-space: nowrap; text-overflow: ellipsis; overflow: hidden;}
+                span{ 
+                    display: inline-block; position: relative; width: 60px; height: 40px; line-height: 40px; margin: 0 5px 0 0; background: #1b7ce2; border: 1px solid #1b7ce2; text-align: center; vertical-align: top; color: #FFF; font-size: 14px; white-space: nowrap; text-overflow: ellipsis; overflow: hidden;
+                    em{ 
+                        @extend .posA,.posCenter;
+                        width: 80%; height:25px; line-height:25px; background:#F30; display:none; color: #FFF; border-radius:50px; font-size: 12px;
+                    }
+                    &:hover{
+                        em{ display: block; cursor: pointer;}
+                    }
+                }
                 .choPeo{ display: inline-block; width: 40px; height: 40px; line-height: 40px; border: 1px dashed #dedede; text-align: center;
                     i{ font-size:28px;}
                     &:hover{ 
