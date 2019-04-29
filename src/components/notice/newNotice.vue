@@ -215,7 +215,7 @@ export default {
             // console.log(this.peoList);
 
         },
-        lianjiCho(value){
+        lianjiCho(value){                               //左侧联机框筛选内容
             let that = this;
             that.lianjizancun = value[value.length-1];
             console.log(that.lianjizancun);
@@ -234,6 +234,8 @@ export default {
             let c = that.havepeoList.concat(that.huancunPeoList);
             that.havepeoList = c;
             that.anniuRX = '';
+            that.checkedPeo=[];
+            that.hcheckedPeo=[];
             for(var i=0; i < that.havepeoList.length; i++){
                 var hzhid = that.havepeoList[i].zhid;
                 console.log(hzhid+"已选");
@@ -249,13 +251,29 @@ export default {
             }
         },
         uchoPeo(){
-            let that = this;
-        },
-        dropRight(cid){                  //删除左侧
             let me = this;
-            for(var n=0; n<me.peoList.length; n++){
-                if(cid == me.peoList[n].zhid){
-                    me.peoList.splice(n,1);
+            let xinh = new Array();
+            if(me.common.isNullorNull(me.lianjizancun) && me.common.isNullorNull(me.lianjizancun)){
+                xinh = me.peoList.concat(me.huancunPeoList);
+            }
+            me.peoList = xinh;
+            me.anniuLX = '';
+            console.log(me.checkedPeo);
+            me.checkedPeo=[];
+            me.hcheckedPeo=[];
+            for(var i=0; i < me.peoList.length; i++){
+                var hzhid = me.peoList[i].zhid;
+                console.log(hzhid+"已选");
+                me.dropRight(hzhid);
+            }
+            
+            
+        },
+        dropRight(cid){                  //删除右侧
+            let me = this;
+            for(var n=0; n<me.havepeoList.length; n++){
+                if(cid == me.havepeoList[n].zhid){
+                    me.havepeoList.splice(n,1);
                 }
             }
         },

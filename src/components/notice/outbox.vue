@@ -34,8 +34,8 @@
                                     </div>
                                     <div class="listBox">
                                         <h3 v-if="index==0"><span>状态</span></h3>
-                                        <span class="readState" v-if="n.fileReadState">已读</span>
-                                        <span class="readState unRead" v-else>未读</span>
+                                        <span class="singleMes"><em style="color:#51a220;">{{n.haveReadPeo}}</em>/<em>{{n.allPeo}}</em></span>
+                                        
                                     </div>
                                     <div class="listBox">
                                         <h3 v-if="index==0"><span>操作</span></h3>
@@ -86,7 +86,8 @@ export default {
                     sentDepartment:'校办公室',
                     sentPeo:'张扬',
                     sentTime:'2019-03-01',
-                    fileReadState:false,
+                    haveReadPeo:20,
+                    allPeo:50
                 },
                 {
                     title:'通知标题很长是为了测试，再很长的内容下的显示效果，长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长',
@@ -95,7 +96,8 @@ export default {
                     sentDepartment:'校办公室',
                     sentPeo:'张扬',
                     sentTime:'2019-03-01',
-                    fileReadState:true,
+                    haveReadPeo:20,
+                    allPeo:50
                 },
                 {
                     title:'通知标题很长是为了测试，再很长的内容下的显示效果，长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长',
@@ -104,7 +106,8 @@ export default {
                     sentDepartment:'校办公室',
                     sentPeo:'张扬',
                     sentTime:'2019-03-01',
-                    fileReadState:false,
+                    haveReadPeo:20,
+                    allPeo:50
                 },
                 {
                     title:'通知标题很长是为了测试，再很长的内容下的显示效果，长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长',
@@ -113,7 +116,8 @@ export default {
                     sentDepartment:'校办公室',
                     sentPeo:'张扬',
                     sentTime:'2019-03-01',
-                    fileReadState:false,
+                    haveReadPeo:20,
+                    allPeo:50
                 },
                 {
                     title:'通知标题很长是为了测试，再很长的内容下的显示效果，长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长',
@@ -122,7 +126,8 @@ export default {
                     sentDepartment:'校办公室',
                     sentPeo:'张扬',
                     sentTime:'2019-03-01',
-                    fileReadState:false,
+                    haveReadPeo:20,
+                    allPeo:50
                 },
                 {
                     title:'通知标题很长是为了测试，再很长的内容下的显示效果，长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长',
@@ -131,7 +136,8 @@ export default {
                     sentDepartment:'校办公室',
                     sentPeo:'张扬',
                     sentTime:'2019-03-01',
-                    fileReadState:true,
+                    haveReadPeo:20,
+                    allPeo:50
                 },
                 {
                     title:'通知标题很长是为了测试，再很长的内容下的显示效果，长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长',
@@ -140,7 +146,8 @@ export default {
                     sentDepartment:'校办公室',
                     sentPeo:'张扬',
                     sentTime:'2019-03-01',
-                    fileReadState:true,
+                    haveReadPeo:20,
+                    allPeo:50
                 },
                 {
                     title:'通知标题很长是为了测试，再很长的内容下的显示效果，长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长',
@@ -149,7 +156,8 @@ export default {
                     sentDepartment:'校办公室',
                     sentPeo:'张扬',
                     sentTime:'2019-03-01',
-                    fileReadState:true,
+                    haveReadPeo:20,
+                    allPeo:50
                 }
             ]
         }

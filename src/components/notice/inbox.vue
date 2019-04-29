@@ -50,7 +50,7 @@
                                     <div class="listBox">
                                         <h3 v-if="index==0"><span>操作</span></h3>
                                         <div class="bts">
-                                             <el-button size="small" type="danger">删除</el-button>
+                                             <el-button size="small" type="danger" @click="dropNotice(index,1)">删除</el-button>
                                         </div>
                                     </div>
                                     <div class="clear"></div>
@@ -89,7 +89,7 @@
                         </div>
                         <div class="listMain" :style="{height:scHeight}">
                             <ul>
-                                <li v-for="(n,index) in noticeList" :key="index">
+                                <li v-for="(n,index) in unReadList" :key="index">
                                     <div class="listBox">
                                         <h3 v-if="index==0"><span>通知标题</span></h3>
                                         <h4>{{n.title}}</h4>
@@ -122,7 +122,7 @@
                                     <div class="listBox">
                                         <h3 v-if="index==0"><span>操作</span></h3>
                                         <div class="bts">
-                                             <el-button size="small" type="danger">删除</el-button>
+                                             <el-button size="small" type="danger" @click="dropNotice(index)">删除</el-button>
                                         </div>
                                     </div>
                                     <div class="clear"></div>
@@ -161,7 +161,7 @@
                         </div>
                         <div class="listMain" :style="{height:scHeight}">
                             <ul>
-                                <li v-for="(n,index) in noticeList" :key="index">
+                                <li v-for="(n,index) in haveReadList" :key="index">
                                     <div class="listBox">
                                         <h3 v-if="index==0"><span>通知标题</span></h3>
                                         <h4>{{n.title}}</h4>
@@ -194,7 +194,7 @@
                                     <div class="listBox">
                                         <h3 v-if="index==0"><span>操作</span></h3>
                                         <div class="bts">
-                                             <el-button size="small" type="danger">删除</el-button>
+                                             <el-button size="small" type="danger" @click="dropNotice(index)">删除</el-button>
                                         </div>
                                     </div>
                                     <div class="clear"></div>
@@ -235,11 +235,6 @@ export default {
             currentPage:1,
             scHeight:'',
             yearList:'2019',
-            // getyear:{
-            //     var dqdate = new Date;
-            //     var year = dqdate.getFullYear();
-            //     return year;
-            // },
             noticeList:[
                 {
                     title:'通知标题很长是为了测试，再很长的内容下的显示效果，长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长',
@@ -313,11 +308,14 @@ export default {
                     sentTime:'2019-03-01',
                     fileReadState:true,
                 }
-            ]
+            ],
+            unReadList:[],
+            haveReadList:[]
         }
     },
     mounted() {
         this.setheight();
+        this.loadList();
     },
     methods:{
         
@@ -333,6 +331,22 @@ export default {
           let thisheight= window.getComputedStyle(me.$refs.mianHeight).height;
           let scHeight = parseInt(thisheight)-150+"px";
           me.scHeight = scHeight;    
+      },
+      loadList(){
+          let me = this;
+          for(let n=0,len=me.noticeList.length;n<len;n++){
+              let currentData = me.noticeList[n];
+               if(currentData.fileReadState){
+                   me.haveReadList.push(currentData);
+                //    console.log(me.haveReadList)
+               }else{
+                   me.unReadList.push(currentData);
+                //    console.log(me.unReadList)
+               }
+          }
+      },
+      dropNotice(suoyin,laiyuan){
+          
       },
       intdetails(){
           this.$router.push({

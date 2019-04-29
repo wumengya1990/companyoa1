@@ -158,7 +158,10 @@ img{border:0px;}
                     h4{ font-weight: normal; color: #333; padding: 0 10px;}
                     .bts{ text-align: center;}
                     .readState{ text-align: center; display: block; color: #169232;}
-                    .singleMes{ text-align: center; display: block;}
+                    .singleMes{ 
+                        text-align: center; display: block;
+                        em{ padding: 0 5px;}
+                    }
                     .unRead{ color: #F30;}
                     dl{
                         padding: 5px 0; color: #666;
