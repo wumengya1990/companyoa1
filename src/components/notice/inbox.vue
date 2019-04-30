@@ -235,80 +235,7 @@ export default {
             currentPage:1,
             scHeight:'',
             yearList:'2019',
-            noticeList:[
-                {
-                    title:'通知标题很长是为了测试，再很长的内容下的显示效果，长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长',
-                    fileType:1,
-                    importance:1,
-                    sentDepartment:'校办公室',
-                    sentPeo:'张扬',
-                    sentTime:'2019-03-01',
-                    fileReadState:false,
-                },
-                {
-                    title:'通知标题很长是为了测试，再很长的内容下的显示效果，长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长',
-                    fileType:2,
-                    importance:2,
-                    sentDepartment:'校办公室',
-                    sentPeo:'张扬',
-                    sentTime:'2019-03-01',
-                    fileReadState:true,
-                },
-                {
-                    title:'通知标题很长是为了测试，再很长的内容下的显示效果，长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长',
-                    fileType:2,
-                    importance:3,
-                    sentDepartment:'校办公室',
-                    sentPeo:'张扬',
-                    sentTime:'2019-03-01',
-                    fileReadState:false,
-                },
-                {
-                    title:'通知标题很长是为了测试，再很长的内容下的显示效果，长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长',
-                    fileType:2,
-                    importance:3,
-                    sentDepartment:'校办公室',
-                    sentPeo:'张扬',
-                    sentTime:'2019-03-01',
-                    fileReadState:false,
-                },
-                {
-                    title:'通知标题很长是为了测试，再很长的内容下的显示效果，长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长',
-                    fileType:2,
-                    importance:3,
-                    sentDepartment:'校办公室',
-                    sentPeo:'张扬',
-                    sentTime:'2019-03-01',
-                    fileReadState:false,
-                },
-                {
-                    title:'通知标题很长是为了测试，再很长的内容下的显示效果，长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长',
-                    fileType:2,
-                    importance:3,
-                    sentDepartment:'校办公室',
-                    sentPeo:'张扬',
-                    sentTime:'2019-03-01',
-                    fileReadState:true,
-                },
-                {
-                    title:'通知标题很长是为了测试，再很长的内容下的显示效果，长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长',
-                    fileType:2,
-                    importance:3,
-                    sentDepartment:'校办公室',
-                    sentPeo:'张扬',
-                    sentTime:'2019-03-01',
-                    fileReadState:true,
-                },
-                {
-                    title:'通知标题很长是为了测试，再很长的内容下的显示效果，长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长',
-                    fileType:2,
-                    importance:3,
-                    sentDepartment:'校办公室',
-                    sentPeo:'张扬',
-                    sentTime:'2019-03-01',
-                    fileReadState:true,
-                }
-            ],
+            noticeList:[],
             unReadList:[],
             haveReadList:[]
         }
@@ -334,16 +261,29 @@ export default {
       },
       loadList(){
           let me = this;
-          for(let n=0,len=me.noticeList.length;n<len;n++){
-              let currentData = me.noticeList[n];
-               if(currentData.fileReadState){
-                   me.haveReadList.push(currentData);
-                //    console.log(me.haveReadList)
-               }else{
-                   me.unReadList.push(currentData);
-                //    console.log(me.unReadList)
-               }
-          }
+          let url = '/noticeList';
+          //let url = '/receive/notice/manage/query';
+          let daten = new Date()
+          let year = daten.getFullYear();
+          let param = {page:1,size:10,queryParam:'',isRead:0,year:year}
+          console.log(year);
+          me.$http.post(url,param,res=>{
+              console.log(res);
+              me.noticeList = res.data.noticeList;
+              //console.log(me.noticeList)
+            for(let n=0,len=me.noticeList.length;n<len;n++){
+                let currentData = me.noticeList[n];
+                if(currentData.fileReadState){
+                    me.haveReadList.push(currentData);
+                    //    console.log(me.haveReadList)
+                }else{
+                    me.unReadList.push(currentData);
+                    //    console.log(me.unReadList)
+                }
+            }
+
+          })
+          
       },
       dropNotice(suoyin,laiyuan){
           
