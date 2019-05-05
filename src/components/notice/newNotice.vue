@@ -29,17 +29,33 @@
                    </div>
                 </el-form-item>
                 <el-form-item label="通知正文">
+                    <quill-editor 
+                        v-model="form.textearMes"
+                        class="textearMesBox"
+                        ref="myQuillEditor"
+                        :options="editorOption" 
+                        @blur="onEditorBlur($event)" 
+                        @focus="onEditorFocus($event)"
+                        @change="onEditorChange($event)">
+                    </quill-editor>
+                </el-form-item>
+                <el-form-item label="上传文件">
+                    <el-upload
+                        class="upload-demo"
+                        ref="upload"
+                        action="https://jsonplaceholder.typicode.com/posts/"
+                        :on-preview="handlePreview"
+                        :on-remove="handleRemove"
+                        :file-list="fileList"
+                        :auto-upload="false">
+                        <el-button slot="trigger" size="small" type="primary">选取文件</el-button>
+                        <el-button style="margin-left: 10px;" size="small" type="success" @click="submitUpload">上传到服务器</el-button>
+                        <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>
+                    </el-upload>
                 </el-form-item>
             </el-form>
             <div class="clear"></div>
-            <quill-editor 
-                v-model="content" 
-                ref="myQuillEditor"
-                :options="editorOption" 
-                @blur="onEditorBlur($event)" 
-                @focus="onEditorFocus($event)"
-                @change="onEditorChange($event)">
-            </quill-editor>
+            
             <div class="bts"><el-button type="primary">提交</el-button><el-button @click="backPage">取消</el-button></div>
         </div>
 
@@ -112,7 +128,7 @@ export default {
     },
     data() {
         return {
-            content:'',
+            content:'cacacaca',
             editorOption:{},
             labelPosition:'right',
             dialogVisible:false,
@@ -120,7 +136,12 @@ export default {
                 title:'',
                 noticeType:'',
                 importance:'',
-                receiver:''
+                receiver:[],
+                textearMes:'',
+                fileList: [
+                    {name: 'food.jpeg', url: 'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100'}, 
+                    {name: 'food2.jpeg', url: 'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100'}
+                    ]
             },
             mechanismList:[                     //机构列表
                 {
@@ -195,6 +216,7 @@ export default {
         },
         onEditorChange(quill){
             console.log(quill)
+            console.log(this.content);
         },
         onSubmit(){
 
@@ -215,6 +237,8 @@ export default {
             // console.log(this.peoList);
 
         },
+
+        ////////筛选框开始
         lianjiCho(value){                               //左侧联机框筛选内容
             let that = this;
             that.lianjizancun = value[value.length-1];
@@ -338,7 +362,20 @@ export default {
         dropPeo(suoyin){
             let that = this;
             that.showPeoList.splice(suoyin,1);
+        },
+        ////////筛选框结束
+
+        //上传功能开始
+        submitUpload() {
+            this.$refs.upload.submit();
+        },
+        handleRemove(file, fileList) {
+            console.log(file, fileList);
+        },
+        handlePreview(file) {
+            console.log(file);
         }
+
         
 
     }
@@ -346,5 +383,5 @@ export default {
 </script>
 
 <style>
-
+.textearMesBox{ height: 200px; margin: 0 0 60px; }
 </style>

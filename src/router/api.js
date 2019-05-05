@@ -48,6 +48,7 @@ function apiAxios (method, url, params, success, failure) {
 //   window.alert('error: ' + JSON.stringify(res.data)) 
 //   } 
 //  } 
+
  }) 
  .catch(function (err) { 
  let res = err.response 

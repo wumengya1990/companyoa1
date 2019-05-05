@@ -65,10 +65,10 @@
                                 @size-change="handleSizeChange"
                                 @current-change="handleCurrentChange"
                                 :current-page="currentPage"
-                                :page-sizes="[100, 200, 300, 400]"
+                                :page-sizes="[10, 20, 30, 40]"
                                 :page-size="100"
                                 layout="total, sizes, prev, pager, next, jumper"
-                                :total="400">
+                                :total="pagingobg.totalNum">
                             </el-pagination>
                         </div>
 
@@ -209,8 +209,8 @@
                                 @size-change="handleSizeChange"
                                 @current-change="handleCurrentChange"
                                 :current-page="currentPage"
-                                :page-sizes="[100, 200, 300, 400]"
-                                :page-size="100"
+                                :page-sizes="[10, 20, 30, 40, 50]"
+                                :page-size="200"
                                 layout="total, sizes, prev, pager, next, jumper"
                                 :total="400">
                             </el-pagination>
@@ -234,41 +234,59 @@ export default {
             searchInput:'',
             currentPage:1,
             scHeight:'',
-            yearList:'2019',
+            yearList:'',
             noticeList:[],
             unReadList:[],
-            haveReadList:[]
+            haveReadList:[],
+            pagingobg:{
+                totalNum:300,                     //总条数
+                pageSize:10,                    //默认加载十条
+            }
         }
     },
     mounted() {
         this.setheight();
+        this.Initialization();
         this.loadList();
     },
     methods:{
         
         handleSizeChange(val) {
-        console.log(`每页 ${val} 条`);
+            let me = this;
+            console.log(`每页 ${val} 条`);
+
+            me.loadList();
+        
       },
       handleCurrentChange(val) {
-        console.log(`当前页: ${val}`);
+           let me = this;
+            console.log(`当前页: ${val}`);
+            me.loadList();
       },
-      setheight:function(){
+      setheight:function(){                         //设置页面高度
           let me = this;
         //   let thisheight = this.$refs.mianHeight.style.offsetHeight;
           let thisheight= window.getComputedStyle(me.$refs.mianHeight).height;
           let scHeight = parseInt(thisheight)-150+"px";
           me.scHeight = scHeight;    
       },
+      Initialization:function(){
+          let me = this;
+           let daten = new Date()
+           let year = daten.getFullYear()+100;
+           me.yearList = year.toString();
+           
+
+      },
       loadList(){
           let me = this;
           let url = '/noticeList';
-          //let url = '/receive/notice/manage/query';
-          let daten = new Date()
-          let year = daten.getFullYear();
-          let param = {page:1,size:10,queryParam:'',isRead:0,year:year}
-          console.log(year);
-          me.$http.post(url,param,res=>{
-              console.log(res);
+        //   let url = '/receive/notice/manage/query';
+          let param = {page:1, size:11, queryParam:'', isRead:1, year:me.yearList};
+        //   console.log(param);
+        //   console.log(me.$qs.stringify(param));
+          me.$http.post(url,me.$qs.stringify(param),res=>{
+              console.log(res)
               me.noticeList = res.data.noticeList;
               //console.log(me.noticeList)
             for(let n=0,len=me.noticeList.length;n<len;n++){
@@ -286,7 +304,10 @@ export default {
           
       },
       dropNotice(suoyin,laiyuan){
-          
+          let me = this;
+          let url = '/receive/notice/manage/delete';
+
+
       },
       intdetails(){
           this.$router.push({

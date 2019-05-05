@@ -9,12 +9,14 @@ import './assets/font/iconfont.css'
 import store from './store/index'
 import putong from './assets/js/common'
 import api from './router/api'
+import qs from 'qs'
 
 Vue.config.productionTip = false
 Vue.use(ElementUI)
 
 Vue.prototype.common = putong;
 Vue.prototype.$http = api;
+Vue.prototype.$qs = qs;
 
 /* eslint-disable no-new */
 new Vue({
