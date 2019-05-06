@@ -34,12 +34,12 @@
                                         <dl><dt>发布时间：</dt><dd>2019-03-01&nbsp;&nbsp;15:00</dd></dl>
                                     </div>
                                     
-                                    <div class="listBox">
+                                    <!-- <div class="listBox">
                                         <h3 v-if="index==0"><span>操作</span></h3>
                                         <div class="bts">
                                              <el-button size="small" @click.stop="dropMes(index)" type="danger">删除</el-button>
                                         </div>
-                                    </div>
+                                    </div> -->
                                     <div class="clear"></div>
                                 </li>
                             </ul>

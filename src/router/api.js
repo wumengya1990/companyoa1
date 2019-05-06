@@ -37,17 +37,17 @@ function apiAxios (method, url, params, success, failure) {
  .then(function (res) {
      success(res.data);
 
-//  if (res.data.success === true) { 
-//   if (success) { 
-//   success(res.data) 
-//   } 
-//  } else { 
-//   if (failure) { 
-//   failure(res.data) 
-//   } else { 
-//   window.alert('error: ' + JSON.stringify(res.data)) 
-//   } 
-//  } 
+    // if (res.data.success === true) { 
+    //     if (success) { 
+    //     success(res.data) 
+    //     } 
+    // } else { 
+    //     if (failure) { 
+    //         failure(res.data) 
+    //     } else { 
+    //         window.alert('error: ' + JSON.stringify(res.data)) 
+    //     } 
+    // } 
 
  }) 
  .catch(function (err) { 

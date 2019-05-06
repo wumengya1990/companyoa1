@@ -4,11 +4,11 @@
 import axios from 'axios';
 import QS from 'qs';
 import { Message } from 'element-ui';
-import store from '../store/index'
+import store from './store/index'
  
 // 环境的切换
 if (process.env.NODE_ENV == 'development') { 
- axios.defaults.baseURL = '/api';
+ axios.defaults.baseURL = process.env.API;
 } else if (process.env.NODE_ENV == 'debug') { 
  axios.defaults.baseURL = '';
 } else if (process.env.NODE_ENV == 'production') { 
@@ -26,8 +26,8 @@ axios.interceptors.request.use(
  config => {
   // 每次发送请求之前判断是否存在token，如果存在，则统一在http请求的header都加上token，不用每次请求都手动添加了
   // 即使本地存在token，也有可能token是过期的，所以在响应拦截器中要对返回状态进行判断
-  const token = store.state.uToken;  
-  token && (config.headers.Authorization = token);  
+//   const token = store.state.uToken;  
+//   token && (config.headers.Authorization = token);  
   return config; 
  }, 
  error => {  
@@ -61,7 +61,7 @@ axios.interceptors.response.use(
     // 清除本地token和清空vuex中token对象    
     // 跳转登录页面    
     case 403:      
-     Toast({      
+    Message({      
       message: '登录过期，请重新登录',      
       duration: 1000,      
       forbidClick: true    
@@ -81,18 +81,16 @@ axios.interceptors.response.use(
      break; 
     // 404请求不存在    
     case 404:     
-     Toast({      
-      message: '网络请求不存在',      
-      duration: 1500,      
-      forbidClick: true    
+    Message({      
+      message: '网络请求不存在',
+      type: 'warning'
      });     
     break;    
     // 其他错误，直接抛出错误提示    
     default:     
-     Toast({      
-      message: error.response.data.message,      
-      duration: 1500,      
-      forbidClick: true    
+    Message({      
+      message: error.response.data.message,
+      type: 'warning'
      });   
    }   
    return Promise.reject(error.response);  
@@ -104,7 +102,7 @@ axios.interceptors.response.use(
  * @param {String} url [请求的url地址] 
  * @param {Object} params [请求时携带的参数] 
  */
-export function get(url, params){ 
+export function get(url, params, res){ 
  return new Promise((resolve, reject) =>{  
   axios.get(url, {   
    params: params  

@@ -273,7 +273,7 @@ export default {
       Initialization:function(){
           let me = this;
            let daten = new Date()
-           let year = daten.getFullYear()+100;
+           let year = daten.getFullYear();
            me.yearList = year.toString();
            
 
@@ -285,7 +285,10 @@ export default {
           let param = {page:1, size:11, queryParam:'', isRead:1, year:me.yearList};
         //   console.log(param);
         //   console.log(me.$qs.stringify(param));
-          me.$http.post(url,me.$qs.stringify(param),res=>{
+         debugger
+          me.$post(url,param,res=>{
+        //   me.$http.post(url,param,res=>{
+           
               console.log(res)
               me.noticeList = res.data.noticeList;
               //console.log(me.noticeList)

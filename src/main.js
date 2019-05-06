@@ -8,15 +8,20 @@ import 'element-ui/lib/theme-chalk/index.css'
 import './assets/font/iconfont.css'
 import store from './store/index'
 import putong from './assets/js/common'
-import api from './router/api'
-import qs from 'qs'
+// import api from './router/api'
+// import qs from 'qs'
+ import {post,get} from './https'
+
 
 Vue.config.productionTip = false
 Vue.use(ElementUI)
 
 Vue.prototype.common = putong;
-Vue.prototype.$http = api;
-Vue.prototype.$qs = qs;
+// Vue.prototype.$http = api;
+// Vue.prototype.$qs = qs;
+Vue.prototype.$post = post;
+Vue.prototype.$get = get;
+
 
 /* eslint-disable no-new */
 new Vue({
