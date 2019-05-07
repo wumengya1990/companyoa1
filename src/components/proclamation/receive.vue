@@ -25,13 +25,13 @@
                                     </div>
                                     <div class="listBox">
                                         <h3 v-if="index==0"><span>类型</span></h3>
-                                        <span class="singleMes">校周计划</span>
+                                        <span class="singleMes">{{n.typeName}}</span>
                                     </div>
                                     <div class="listBox">
                                         <h3 v-if="index==0"><span>发布信息</span></h3>
                                         <!-- <dl><dt>发布部门：</dt><dd>校办公室</dd></dl> -->
-                                        <dl><dt>发布人：</dt><dd>张扬</dd></dl>
-                                        <dl><dt>发布时间：</dt><dd>2019-03-01&nbsp;&nbsp;15:00</dd></dl>
+                                        <dl><dt>发布人：</dt><dd>{{n.pubUserName}}</dd></dl>
+                                        <dl><dt>发布时间：</dt><dd>{{n.pubTime}}</dd></dl>
                                     </div>
                                     
                                     <!-- <div class="listBox">
@@ -88,84 +88,12 @@ export default {
                 {value:'t3', label:'校长推荐'},
                 {value:'t4', label:'其他信息'}
             ],
-            noticeList:[
-                {
-                    title:'通知标题很长是为了测试，再很长的内容下的显示效果，长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长',
-                    fileType:1,
-                    importance:1,
-                    sentDepartment:'校办公室',
-                    sentPeo:'张扬',
-                    sentTime:'2019-03-01',
-                    fileReadState:false,
-                },
-                {
-                    title:'通知标题很长是为了测试，再很长的内容下的显示效果，长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长',
-                    fileType:2,
-                    importance:2,
-                    sentDepartment:'校办公室',
-                    sentPeo:'张扬',
-                    sentTime:'2019-03-01',
-                    fileReadState:true,
-                },
-                {
-                    title:'通知标题很长是为了测试，再很长的内容下的显示效果，长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长',
-                    fileType:2,
-                    importance:3,
-                    sentDepartment:'校办公室',
-                    sentPeo:'张扬',
-                    sentTime:'2019-03-01',
-                    fileReadState:false,
-                },
-                {
-                    title:'通知标题很长是为了测试，再很长的内容下的显示效果，长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长',
-                    fileType:2,
-                    importance:3,
-                    sentDepartment:'校办公室',
-                    sentPeo:'张扬',
-                    sentTime:'2019-03-01',
-                    fileReadState:false,
-                },
-                {
-                    title:'通知标题很长是为了测试，再很长的内容下的显示效果，长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长',
-                    fileType:2,
-                    importance:3,
-                    sentDepartment:'校办公室',
-                    sentPeo:'张扬',
-                    sentTime:'2019-03-01',
-                    fileReadState:false,
-                },
-                {
-                    title:'通知标题很长是为了测试，再很长的内容下的显示效果，长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长',
-                    fileType:2,
-                    importance:3,
-                    sentDepartment:'校办公室',
-                    sentPeo:'张扬',
-                    sentTime:'2019-03-01',
-                    fileReadState:true,
-                },
-                {
-                    title:'通知标题很长是为了测试，再很长的内容下的显示效果，长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长',
-                    fileType:2,
-                    importance:3,
-                    sentDepartment:'校办公室',
-                    sentPeo:'张扬',
-                    sentTime:'2019-03-01',
-                    fileReadState:true,
-                },
-                {
-                    title:'通知标题很长是为了测试，再很长的内容下的显示效果，长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长',
-                    fileType:2,
-                    importance:3,
-                    sentDepartment:'校办公室',
-                    sentPeo:'张扬',
-                    sentTime:'2019-03-01',
-                    fileReadState:true,
-                }
-            ]
+            noticeList:[]
         }
     },
     mounted() {
         this.setheight();
+        this.loadgonggao();
     },
     methods:{
         handleSizeChange(val) {
@@ -173,6 +101,16 @@ export default {
       },
       handleCurrentChange(val) {
         console.log(`当前页: ${val}`);
+      },
+      loadgonggao(){
+          let me = this;
+          let url = '/gonggaoLIst';
+          let param = ''
+          me.$http.post(url,param,res=>{
+            //   console.log(res);
+              me.noticeList = res.data.noticeList
+              console.log(me.noticeList)
+          })
       },
       setheight:function(){
           let me = this;

@@ -1,21 +1,16 @@
 <template>
     <div class="ndetails" ref="mianHeight">
         <div class="detailsTop">
-            <h2>{{noticeCon.ntitle}}</h2>
+            <h2>{{noticeCon.title}}</h2>
             <p class="synopsis">
-                <span>通知类型:{{noticeCon.ntype}}</span>
-                <span>发布部门:
-                    {{noticeCon.ndepartment}}
-                    <em v-if="noticeCon.ndepartment==1">校公文</em>
-                    <em v-else>局通知</em>
-                    </span>
-                <span>发布人:{{noticeCon.npeo}}</span>
-                <span>发布时间:{{noticeCon.ntime}}</span>
+                <span>通知类型:{{noticeCon.typeName}}</span>
+                <span>发布人:{{noticeCon.pubUserName}}</span>
+                <span>发布时间:{{noticeCon.pubTime}}</span>
             </p>
         </div>
 
         <div class="messageBox" :style="{height:scHeight}">
-            <div class="messageBoxN" v-html="noticeCon.nmes">
+            <div class="messageBoxN" v-html="noticeCon.content">
                 
             </div>
             <div class="suspensionBts">
@@ -91,18 +86,7 @@ export default {
             shareBox:false,
             activeNames: ['1'],
             scHeight:'',
-            noticeCon:{
-                ntitle:'通知标题长长长长长长长长长长长长长长长长长长长长长长长长',
-                ntype:1,
-                ndepartment:'教务处',
-                npeo:'张洋',
-                ntime:'2019-02-25  星期五  15:00',
-                nmes:'<p><span style="font-weight:bold; color:red;">通知内容：</span>测试数据长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长</p>',
-                nfileList:[
-                    {ftitle:'',url:'',filetype:1}
-                ]
-                
-            },
+            noticeCon:{},
             seeList:[
                 {
                     department:'校办公室',
@@ -146,6 +130,8 @@ export default {
     },
     mounted() {
          this.setheight();
+        // this.loadDetails();
+         this.loadpeo();
     },
     methods:{
         setheight:function(){
@@ -153,6 +139,26 @@ export default {
           let thisheight= window.getComputedStyle(me.$refs.mianHeight).height;
           let scHeight = parseInt(thisheight)-280+"px";
           me.scHeight = scHeight;    
+      },
+      loadpeo(){
+          let me = this;
+           let url = '/base/query/units';
+            let param={};
+            me.$http.post(url,param, res=>{
+                console.log(res);
+            })
+            
+
+
+      },
+      loadDetails(){
+           let me = this;
+           let url = '/gonggaoxiangqing';
+           let param={declareId:1};
+           me.$http.post(url,param,res=>{
+                me.noticeCon = res.data.gonggongContent;
+                console.log(me.noticeCon);
+           })
       },
       dtopThis(){
           this.$confirm('此操作将永久删除该文件, 是否继续?', '提示', {

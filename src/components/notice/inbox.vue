@@ -240,6 +240,7 @@ export default {
             haveReadList:[],
             pagingobg:{
                 totalNum:300,                     //总条数
+                currentPage:1,
                 pageSize:10,                    //默认加载十条
             }
         }
@@ -280,30 +281,24 @@ export default {
       },
       loadList(){
           let me = this;
-          let url = '/noticeList';
-        //   let url = '/receive/notice/manage/query';
+        //   let url = '/noticeList';
+          let url = '/receive/notice/manage/query';
           let param = {page:1, size:11, queryParam:'', isRead:1, year:me.yearList};
-        //   console.log(param);
-        //   console.log(me.$qs.stringify(param));
-         debugger
-          me.$post(url,param,res=>{
-        //   me.$http.post(url,param,res=>{
-           
-              console.log(res)
-              me.noticeList = res.data.noticeList;
-              //console.log(me.noticeList)
-            for(let n=0,len=me.noticeList.length;n<len;n++){
-                let currentData = me.noticeList[n];
-                if(currentData.fileReadState){
-                    me.haveReadList.push(currentData);
-                    //    console.log(me.haveReadList)
-                }else{
-                    me.unReadList.push(currentData);
-                    //    console.log(me.unReadList)
-                }
-            }
+          //me.$post(url,param,res=>{
+          me.$http.post(url,param,res=>{
+             console.log(res)
+             me.noticeList = res.data;
+            // for(let n=0,len=me.noticeList.length;n<len;n++){
+            //     let currentData = me.noticeList[n];
+            //     if(currentData.fileReadState){
+            //         me.haveReadList.push(currentData);
+            //     }else{
+            //         me.unReadList.push(currentData);  
+            //     }
+            // }
 
-          })
+         })
+         
           
       },
       dropNotice(suoyin,laiyuan){

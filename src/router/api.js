@@ -29,14 +29,14 @@ function apiAxios (method, url, params, success, failure) {
  axios({ 
  method: method, 
  url: url, 
- data: method === 'POST' ? params : null, 
- params: method === 'GET' ? params : null, 
+ data: method === 'POST' || method === 'PUT' ? params : null, 
+ params: method === 'GET' || method === 'DELETE' ? params : null, 
  baseURL: root, 
  withCredentials: false
  }) 
  .then(function (res) {
      success(res.data);
-
+    //  console.log(failure);
     // if (res.data.success === true) { 
     //     if (success) { 
     //     success(res.data) 
@@ -45,16 +45,16 @@ function apiAxios (method, url, params, success, failure) {
     //     if (failure) { 
     //         failure(res.data) 
     //     } else { 
-    //         window.alert('error: ' + JSON.stringify(res.data)) 
+    //         //window.alert('error: ' + JSON.stringify(res.data))
+    //         console.log('error: ' + JSON.stringify(res.data)) 
     //     } 
     // } 
 
  }) 
  .catch(function (err) { 
- let res = err.response 
  if (err) { 
-  window.alert('api error, HTTP CODE: ' + res.status) 
-  return
+  console.log('api error, HTTP CODE: ' + err) 
+  
  } 
  }) 
 } 

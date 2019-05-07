@@ -107,6 +107,7 @@ export function get(url, params, res){
   axios.get(url, {   
    params: params  
   })  
+  
   .then(res => {   
    resolve(res.data);  
   })  

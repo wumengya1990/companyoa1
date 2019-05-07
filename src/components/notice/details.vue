@@ -1,21 +1,21 @@
 <template>
     <div class="ndetails" ref="mianHeight">
         <div class="detailsTop">
-            <h2>{{noticeCon.ntitle}}</h2>
+            <h2>{{noticeCon.title}}</h2>
             <p class="synopsis">
-                <span>通知类型:{{noticeCon.ntype}}</span>
+                <span>通知类型:{{noticeCon.typeName}}</span>
                 <span>发布部门:
-                    {{noticeCon.ndepartment}}
+                    {{noticeCon.pubDeptName}}
                     <em v-if="noticeCon.ndepartment==1">校公文</em>
                     <em v-else>局通知</em>
                     </span>
-                <span>发布人:{{noticeCon.npeo}}</span>
-                <span>发布时间:{{noticeCon.ntime}}</span>
+                <span>发布人:{{noticeCon.pubUserName}}</span>
+                <span>发布时间:{{noticeCon.pubTime}}</span>
             </p>
         </div>
 
         <div class="messageBox" :style="{height:scHeight}">
-            <div class="messageBoxN" v-html="noticeCon.nmes">
+            <div class="messageBoxN" v-html="noticeCon.content">
                 
             </div>
             <div class="suspensionBts">
@@ -39,7 +39,7 @@
                     </div>
 
                 </el-popover>
-                <el-tooltip class="item" effect="dark" content="删除" placement="right"><a @click="dtopThis"><i class="el-icon-delete"></i></a></el-tooltip>
+                <el-tooltip v-if="n.isDelete" class="item" effect="dark" content="删除" placement="right"><a @click="dtopThis"><i class="el-icon-delete"></i></a></el-tooltip>
                 <el-tooltip class="item" effect="dark" content="返回顶部" placement="right"><a><i class="el-icon-upload2"></i></a></el-tooltip>
             </div>
 
@@ -92,12 +92,13 @@ export default {
             activeNames: ['1'],
             scHeight:'',
             noticeCon:{
-                ntitle:'通知标题长长长长长长长长长长长长长长长长长长长长长长长长',
-                ntype:1,
-                ndepartment:'教务处',
-                npeo:'张洋',
-                ntime:'2019-02-25  星期五  15:00',
-                nmes:'<p><span style="font-weight:bold; color:red;">通知内容：</span>测试数据长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长</p>',
+                title:'通知标题长长长长长长长长长长长长长长长长长长长长长长长长',
+                typeName:1,
+                pubDeptName:'教务处',
+                pubUserName:'张洋',
+                isDelete:true,
+                pubTime:'2019-02-25  星期五  15:00',
+                content:'<p><span style="font-weight:bold; color:red;">通知内容：</span>测试数据长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长</p>',
                 nfileList:[
                     {ftitle:'',url:'',filetype:1}
                 ]
