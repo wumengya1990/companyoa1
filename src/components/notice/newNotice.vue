@@ -6,14 +6,14 @@
                     <el-input v-model="form.title" style="width:500px;"></el-input>
                 </el-form-item>
                 <el-form-item label="通知类型">
-                    <el-select v-model="form.noticeType" placeholder="请选择活动区域">
+                    <el-select v-model="form.typeId" placeholder="请选择活动区域">
                         <el-option label="校文件" value="1"></el-option>
                         <el-option label="局文件" value="2"></el-option>
                         <el-option label="内部文件" value="3"></el-option>
                     </el-select>
                 </el-form-item>
                 <el-form-item label="文件重要性">
-                    <el-select v-model="form.importance" placeholder="请选择活动区域">
+                    <el-select v-model="form.noticeImportance" placeholder="请选择活动区域">
                         <el-option label="一般" value="1"></el-option>
                         <el-option label="重要" value="2"></el-option>
                         <el-option label="紧急" value="3"></el-option>
@@ -21,16 +21,16 @@
                 </el-form-item>
                 <el-form-item label="接收人员">
                    <div class="peoList">
-                       <span v-for="(m,index) in showPeoList" :key="m.uid">
-                           {{m.peoName}}
+                       <span v-for="(m,index) in form.noticeUsers" :key="m.uid">
+                           {{m.userName}}
                            <em @click="dropPeo(index)">关闭</em>
                         </span>
-                       <a class="choPeo" @click="dialogVisible = true"><i class="icon iconfont iconrenyuanzengjia"></i></a>
+                       <a class="choPeo" @click="openLayer"><i class="icon iconfont iconrenyuanzengjia"></i></a>
                    </div>
                 </el-form-item>
                 <el-form-item label="通知正文">
                     <quill-editor 
-                        v-model="form.textearMes"
+                        v-model="form.content"
                         class="textearMesBox"
                         ref="myQuillEditor"
                         :options="editorOption" 
@@ -43,7 +43,8 @@
                     <el-upload
                         class="upload-demo"
                         ref="upload"
-                        action="https://jsonplaceholder.typicode.com/posts/"
+                        action="http://192.168.0.178:9050/file/manage/upload"
+                        :on-success="handleAvatarSuccess"
                         :on-preview="handlePreview"
                         :on-remove="handleRemove"
                         :file-list="fileList"
@@ -56,7 +57,7 @@
             </el-form>
             <div class="clear"></div>
             
-            <div class="bts"><el-button type="primary">提交</el-button><el-button @click="backPage">取消</el-button></div>
+            <div class="bts"><el-button type="primary" @click="xinjian">提交</el-button><el-button @click="backPage">取消</el-button></div>
         </div>
 
         <el-dialog title="提示" :visible.sync="dialogVisible" width="800px" :before-close="handleClose">
@@ -74,7 +75,7 @@
                             <!-- <el-checkbox :indeterminate="isIndeterminate" v-model="checkAll" @change="handleCheckAllChange">全选</el-checkbox> -->
                             <div  class="peoListM">
                             <el-checkbox-group v-model="checkedPeo" @change="handleCheckedPeoChange">
-                                <el-checkbox v-for="peo in peoList" :label="peo.uid" :key="peo.uid"><span style="display:inline-block; width:60px;">{{peo.peoName}}</span>({{peo.schoolName}}-{{peo.gradeName}}-{{peo.groupName}})</el-checkbox>
+                                <el-checkbox v-for="peo in peoList" :label="peo.userId" :key="peo.userId"><span style="display:inline-block; width:60px;">{{peo.userName}}</span>({{peo.unitName}}-{{peo.deptName}})</el-checkbox>
                             </el-checkbox-group>
                             </div>
                             </div>
@@ -91,7 +92,7 @@
                             <div class="peoList">
                                 <div class="peoListM">
                                     <el-checkbox-group v-model="hcheckedPeo" @change="handleCheckedPeoChangeBack">
-                                        <el-checkbox v-for="hpeo in havepeoList" :label="hpeo.uid" :key="hpeo.uid"><span style="display:inline-block; width:60px;">{{hpeo.peoName}}</span>({{hpeo.schoolName}}-{{hpeo.gradeName}}-{{hpeo.groupName}})</el-checkbox>
+                                        <el-checkbox v-for="hpeo in havepeoList" :label="hpeo.userId" :key="hpeo.userId"><span style="display:inline-block; width:60px;">{{hpeo.userName}}</span>({{hpeo.unitName}}-{{hpeo.deptName}})</el-checkbox>
                                     </el-checkbox-group>
                                 </div>
                             </div>
@@ -134,15 +135,16 @@ export default {
             dialogVisible:false,
             form:{
                 title:'',
-                noticeType:'',
-                importance:'',
-                receiver:[],
-                textearMes:'',
-                fileList: [
+                typeId:'',
+                noticeImportance:'',
+                noticeUsers:[],
+                content:'',
+                
+            },
+            fileList: [
                     {name: 'food.jpeg', url: 'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100'}, 
                     {name: 'food2.jpeg', url: 'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100'}
-                    ]
-            },
+                    ],
             mechanismList:[                     //机构列表
                 {
                     label:'徐州市第二中学',value:'qjg01',jgid:'qjg01',
@@ -198,7 +200,7 @@ export default {
         }
     },
     mounted() {
-        this.setData();
+        // this.setData();
     },
     methods:{
         backPage(){
@@ -239,6 +241,18 @@ export default {
         },
 
         ////////筛选框开始
+        openLayer(){
+            let me = this;
+            me.dialogVisible = true;
+            let url='/base/query/users';
+            let param = {unitId:'1',unitType:'School'};
+            me.$http.post(url,param,res=>{
+                // console.log(res);
+                me.peoList = res.result;
+                console.log(me.peoList);
+            })
+
+        },
         lianjiCho(value){                               //左侧联机框筛选内容
             let that = this;
             that.lianjizancun = value[value.length-1];
@@ -309,7 +323,7 @@ export default {
             for(var i=0,len=value.length;i<len;i++){
                 let csid = value[i];
                 for(var j = 0, lenn=me.peoList.length;j<lenn;j++){
-                    if(csid==me.peoList[j].uid){
+                    if(csid==me.peoList[j].userId){
                         me.huancunPeoList.push(me.peoList[j]);
                     }
                 }
@@ -338,7 +352,7 @@ export default {
                 let csid = value[i];
                 
                 for(var j = 0, lenn=me.havepeoList.length;j<lenn;j++){
-                    if(csid==me.havepeoList[j].uid){
+                    if(csid==me.havepeoList[j].userId){
                         me.huancunPeoList.push(me.havepeoList[j]);
                     }
                 }
@@ -356,7 +370,7 @@ export default {
              console.log(me.huancunPeoList);
         },
         tijiao(){
-            this.showPeoList = this.havepeoList;
+            this.form.noticeUsers = this.havepeoList;
             this.dialogVisible = false;
         },
         dropPeo(suoyin){
@@ -374,8 +388,24 @@ export default {
         },
         handlePreview(file) {
             console.log(file);
-        }
+        },
+        handleAvatarSuccess(res, file){
+            console.log(res);
+            console.log(file);
+        },
+        //最后上传按钮
+        xinjian(){
+            let me = this;
+            let url = '/notice/manage/add';
+            let params = {noticeBean:me.form}; 
+            let param=JSON.stringify(params);
+            // let param = params;
+            console.log(param);
+            me.$http.post(url,param,res=>{
+                console.log(res);
+            })
 
+        }
         
 
     }

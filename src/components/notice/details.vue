@@ -39,7 +39,7 @@
                     </div>
 
                 </el-popover>
-                <el-tooltip v-if="n.isDelete" class="item" effect="dark" content="删除" placement="right"><a @click="dtopThis"><i class="el-icon-delete"></i></a></el-tooltip>
+                <el-tooltip class="item" effect="dark" content="删除" placement="right"><a @click="dtopThis"><i class="el-icon-delete"></i></a></el-tooltip>
                 <el-tooltip class="item" effect="dark" content="返回顶部" placement="right"><a><i class="el-icon-upload2"></i></a></el-tooltip>
             </div>
 
@@ -149,6 +149,12 @@ export default {
          this.setheight();
     },
     methods:{
+        loadDetails(){
+            let me = this;
+            let url = '/receive/notice/manage/query/detail';
+            let param = {noticeId:nid,noticeUserId:me.noticeUserId,year:me.yearList};
+            
+        },
         setheight:function(){
           let me = this;
           let thisheight= window.getComputedStyle(me.$refs.mianHeight).height;

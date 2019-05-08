@@ -1,7 +1,10 @@
 // 配置API接口地址 
 var root = process.env.API 
 // 引用axios 
-var axios = require('axios') 
+// var axios = require('axios')
+import axios from 'axios'
+//引用qs
+import qs from 'qs'
 // 自定义判断元素类型JS 
 function toType (obj) { 
  return ({}).toString.call(obj).match(/\s([a-zA-Z]+)/)[1].toLowerCase() 
