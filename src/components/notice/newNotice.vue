@@ -419,11 +419,11 @@ export default {
             // let ccc = me.bean("noticeBean",me.form);
             let forms = new FormData();
             let bean = {};
-            bean.title = '';
-            bean.typeId = '';
-            bean.noticeImportance = '';
-            bean.noticeUsers = [];
-            bean.content = '';
+            bean.title = me.form.title;
+            bean.typeId = me.form.typeId;
+            bean.noticeImportance = me.form.noticeImportance;
+            bean.noticeUsers = me.form.noticeUsers;
+            bean.content = me.form.content;
 
             forms.append("noticeBean",JSON.stringify(bean));
             for(let i in me.filesList) {
