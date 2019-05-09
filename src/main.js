@@ -12,6 +12,7 @@ import api from './router/api'
 import qs from 'qs'
 
 
+
 Vue.config.productionTip = false
 Vue.use(ElementUI)
 
@@ -19,7 +20,18 @@ Vue.prototype.common = putong;
 Vue.prototype.$http = api;
 Vue.prototype.$qs = qs;
 
+Vue.prototype.bean = function (key, value) {
+  var stringJson = '{"' + key + '": ""}';
+  var json = JSON.parse(stringJson);
+  json[key] = JSON.stringify(value);
+  return json;
+}
 
+// 处理ajax请求
+import axios from './assets/js/axios.config';
+Vue.prototype.$ajax = axios;
+// 引入JS组件
+import './assets/js/components';
 
 /* eslint-disable no-new */
 new Vue({

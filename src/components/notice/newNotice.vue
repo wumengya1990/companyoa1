@@ -43,14 +43,14 @@
                     <el-upload
                         class="upload-demo"
                         ref="upload"
-                        action="http://192.168.0.178:9050/file/manage/upload"
-                        :on-success="handleAvatarSuccess"
+                        action=""
+                        :on-change="onUploadChange"
                         :on-preview="handlePreview"
                         :on-remove="handleRemove"
-                        :file-list="fileList"
+                        :file-list="form.files"
                         :auto-upload="false">
                         <el-button slot="trigger" size="small" type="primary">选取文件</el-button>
-                        <el-button style="margin-left: 10px;" size="small" type="success" @click="submitUpload">上传到服务器</el-button>
+                        <!-- <el-button style="margin-left: 10px;" size="small" type="success" @click="uploadSectionFile">上传到服务器</el-button> -->
                         <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>
                     </el-upload>
                 </el-form-item>
@@ -138,13 +138,9 @@ export default {
                 typeId:'',
                 noticeImportance:'',
                 noticeUsers:[],
-                content:'',
-                
+                content:''
             },
-            fileList: [
-                    {name: 'food.jpeg', url: 'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100'}, 
-                    {name: 'food2.jpeg', url: 'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100'}
-                    ],
+            filesList: [],
             mechanismList:[                     //机构列表
                 {
                     label:'徐州市第二中学',value:'qjg01',jgid:'qjg01',
@@ -241,17 +237,32 @@ export default {
         },
 
         ////////筛选框开始
-        openLayer(){
-            let me = this;
-            me.dialogVisible = true;
-            let url='/base/query/users';
-            let param = {unitId:'1',unitType:'School'};
-            me.$http.post(url,param,res=>{
-                // console.log(res);
-                me.peoList = res.result;
-                console.log(me.peoList);
-            })
+        // openLayer(){
+        //     let me = this;
+        //     me.dialogVisible = true;
+        //     let url='/base/query/users';
+        //     let param = {unitId:'1',unitType:'School'};
+        //     me.$http.post(url,JSON.stringify(param),res=>{
+        //         console.log(res);
+        //         me.peoList = res.result;
+        //         console.log(me.peoList);
+        //     })
 
+        // },
+        openLayer() {
+        let me = this;
+        me.dialogVisible = true;
+        let url = "/base/query/users";
+        let param = { unitId:'1',unitType:'School'};
+        me.$ajax
+            .post(url, param)
+            .then(out => {
+            me.hw_result(out.data, true, me, () => {
+                console.log(out);
+                me.peoList = out.data.result;
+            });
+            })
+            .catch(error => {});
         },
         lianjiCho(value){                               //左侧联机框筛选内容
             let that = this;
@@ -393,17 +404,45 @@ export default {
             console.log(res);
             console.log(file);
         },
+        onUploadChange(file,fileList){
+            console.log(fileList);
+            this.filesList = fileList;
+        },
+
         //最后上传按钮
         xinjian(){
             let me = this;
+            let config = {
+                headers: { "Content-Type": "multipart/form-data" }
+            };
             let url = '/notice/manage/add';
-            let params = {noticeBean:me.form}; 
-            let param=JSON.stringify(params);
-            // let param = params;
-            console.log(param);
-            me.$http.post(url,param,res=>{
-                console.log(res);
+            // let ccc = me.bean("noticeBean",me.form);
+            let forms = new FormData();
+            let bean = {};
+            bean.title = '';
+            bean.typeId = '';
+            bean.noticeImportance = '';
+            bean.noticeUsers = [];
+            bean.content = '';
+
+            forms.append("noticeBean",JSON.stringify(bean));
+            for(let i in me.filesList) {
+                forms.append("files",me.filesList[i]);
+            }
+           
+           
+            
+            // let param=JSON.stringify(params);
+            console.log(forms);
+            me.$ajax
+            .post(url,forms,config)
+            .then(out => {
+            me.hw_result(out.data, true, me, () => {
+                console.log(out);
+                // me.peoList = out.data.result;
+            });
             })
+            .catch(error => {});
 
         }
         
