@@ -40,19 +40,9 @@
                     </quill-editor>
                 </el-form-item>
                 <el-form-item label="上传文件">
-                    <el-upload
-                        class="upload-demo"
-                        ref="upload"
-                        action=""
-                        :on-change="onUploadChange"
-                        :on-preview="handlePreview"
-                        :on-remove="handleRemove"
-                        :file-list="form.files"
-                        :auto-upload="false">
-                        <el-button slot="trigger" size="small" type="primary">选取文件</el-button>
-                        <!-- <el-button style="margin-left: 10px;" size="small" type="success" @click="uploadSectionFile">上传到服务器</el-button> -->
-                        <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>
-                    </el-upload>
+                    <div class="fileBox">
+                        <input type="file" name="filr" id="file" @change="fileCho($event)">
+                    </div>
                 </el-form-item>
             </el-form>
             <div class="clear"></div>
@@ -61,7 +51,9 @@
         </div>
 
         <el-dialog title="提示" :visible.sync="dialogVisible" width="800px" :before-close="handleClose">
+        
             <div class="layerBox">
+
                 <div class="shuttleBox">
                     
                     <div class="leftBox">
@@ -100,6 +92,7 @@
                     </div>
 
                 </div>
+
             </div>
             <span slot="footer" class="dialog-footer">
                 <el-button @click="dialogVisible = false">取 消</el-button>
@@ -129,6 +122,7 @@ export default {
     },
     data() {
         return {
+            file:'',
             content:'cacacaca',
             editorOption:{},
             labelPosition:'right',
@@ -141,6 +135,7 @@ export default {
                 content:''
             },
             filesList: [],
+            filesListss:[],
             mechanismList:[                     //机构列表
                 {
                     label:'徐州市第二中学',value:'qjg01',jgid:'qjg01',
@@ -207,14 +202,14 @@ export default {
             return data.label.indexOf(value) !== -1;
         },
         onEditorBlur(quill){
-            console.log(quill)
+            // console.log(quill)
         },
         onEditorFocus(quill){
-            console.log(quill)
+            // console.log(quill)
         },
         onEditorChange(quill){
-            console.log(quill)
-            console.log(this.content);
+            // console.log(quill)
+            // console.log(this.content);
         },
         onSubmit(){
 
@@ -237,18 +232,7 @@ export default {
         },
 
         ////////筛选框开始
-        // openLayer(){
-        //     let me = this;
-        //     me.dialogVisible = true;
-        //     let url='/base/query/users';
-        //     let param = {unitId:'1',unitType:'School'};
-        //     me.$http.post(url,JSON.stringify(param),res=>{
-        //         console.log(res);
-        //         me.peoList = res.result;
-        //         console.log(me.peoList);
-        //     })
-
-        // },
+        
         openLayer() {
         let me = this;
         me.dialogVisible = true;
@@ -287,7 +271,7 @@ export default {
             that.hcheckedPeo=[];
             for(var i=0; i < that.havepeoList.length; i++){
                 var hzhid = that.havepeoList[i].zhid;
-                console.log(hzhid+"已选");
+                // console.log(hzhid+"已选");
                 that.dropLeft(hzhid);
             }
         },
@@ -381,7 +365,19 @@ export default {
              console.log(me.huancunPeoList);
         },
         tijiao(){
-            this.form.noticeUsers = this.havepeoList;
+            // this.form.noticeUsers = this.havepeoList;
+            // this.form.noticeUsers = this.havepeoList
+            let people = {}
+            for(let i in this.havepeoList){
+                people.userId = this.havepeoList[i].userId;
+                people.userName = this.havepeoList[i].userName;
+                people.userDeptId = this.havepeoList[i].deptId;
+                people.userDeptName = this.havepeoList[i].deptName;
+                people.deptOrgId = this.havepeoList[i].unitId;
+                people.deptOrgName = this.havepeoList[i].unitName;
+                this.form.noticeUsers.push(people);
+            }
+            console.log(this.form.noticeUsers);
             this.dialogVisible = false;
         },
         dropPeo(suoyin){
@@ -390,24 +386,13 @@ export default {
         },
         ////////筛选框结束
 
-        //上传功能开始
-        submitUpload() {
-            this.$refs.upload.submit();
+        // 上传内容
+        fileCho(event){
+            this.file = event.target.files[0];
+            console.log(this.file);
+
         },
-        handleRemove(file, fileList) {
-            console.log(file, fileList);
-        },
-        handlePreview(file) {
-            console.log(file);
-        },
-        handleAvatarSuccess(res, file){
-            console.log(res);
-            console.log(file);
-        },
-        onUploadChange(file,fileList){
-            console.log(fileList);
-            this.filesList = fileList;
-        },
+        // 上传图片
 
         //最后上传按钮
         xinjian(){
@@ -427,20 +412,18 @@ export default {
 
             forms.append("noticeBean",JSON.stringify(bean));
             for(let i in me.filesList) {
-                forms.append("files",me.filesList[i]);
+                 forms.append("files",me.filesList[i]);
             }
-           
-           
-            
+            // forms.append("files",me.filesList);
             // let param=JSON.stringify(params);
-            console.log(forms);
+            // console.log(forms);
             me.$ajax
             .post(url,forms,config)
             .then(out => {
             me.hw_result(out.data, true, me, () => {
                 console.log(out);
                 // me.peoList = out.data.result;
-            });
+                });
             })
             .catch(error => {});
 
@@ -453,4 +436,5 @@ export default {
 
 <style>
 .textearMesBox{ height: 200px; margin: 0 0 60px; }
+.textearMesBox .ql-formats span{line-height: normal;}
 </style>

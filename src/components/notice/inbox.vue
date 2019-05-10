@@ -5,7 +5,7 @@
                 <el-tab-pane label="全部" name="2">
                     <div class="tabContent">
                         <div class="topTool">
-                            <el-input v-model="queryParam" style="width:300px; margin:0 5px 0 0;" size="small" placeholder="请输入内容" clearable></el-input>
+                            <el-input v-model="queryParam" style="width:300px; margin:0 5px 0 0;" size="small" placeholder="请输入要搜索的标题、标签、发布信息" clearable></el-input>
                             <el-date-picker
                                 v-model="yearList"
                                 align="right"
@@ -17,7 +17,7 @@
                         </div>
                         <div class="listMain" :style="{height:scHeight}">
                             <ul>
-                                <li v-for="(n,index) in noticeList" :key="index" @click="intdetails">
+                                <li v-for="(n,index) in noticeList" :key="index" @click="intdetails(n.noticeUserId)">
                                     <div class="listBox">
                                         <h3 v-if="index==0"><span>通知标题</span></h3>
                                         <h4>{{n.title}}</h4>
@@ -330,9 +330,10 @@ export default {
 
         })
       },
-      intdetails(){
+      intdetails(nuid){
           this.$router.push({
-              name:'inboxdetails'
+              name:'inboxdetails',
+              params:{noticeUserId:nuid}
           })
       }
     }
