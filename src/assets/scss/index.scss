@@ -135,7 +135,15 @@ img{border:0px;}
                 text-align: center; padding: 10px;
                 button{ width: 200px;}
             }
-    }
+            .fileBox{
+                ul{
+                    li{
+                         width: 500px; border-bottom:1px solid #eaeaea;
+                         button{ float: right; margin: 6px 0 0;}
+                    }
+                }
+            }
+        }
     }
     .topTool{ 
         border-bottom: 1px solid #eaeaea; padding: 10px 0;

@@ -147,12 +147,23 @@ export default {
     },
     mounted() {
          this.setheight();
+         console.log(this.$route.params.noticeUserId);
+         console.log(this.$route.params.year);
     },
     methods:{
         loadDetails(){
             let me = this;
             let url = '/receive/notice/manage/query/detail';
-            let param = {noticeId:nid,noticeUserId:me.noticeUserId,year:me.yearList};
+            let param = {noticeId:nid,noticeUserId:me.$route.params.noticeUserId,year:me.$route.params.year};
+            me.$ajax
+            .post(url,param)
+            .then(out => {
+            me.hw_result(out.data, true, me, () => {
+                console.log(out);
+                // me.peoList = out.data.result;
+                });
+            })
+            .catch(error => {});
             
         },
         setheight:function(){

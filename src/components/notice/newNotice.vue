@@ -41,7 +41,12 @@
                 </el-form-item>
                 <el-form-item label="上传文件">
                     <div class="fileBox">
-                        <input type="file" name="filr" id="file" @change="fileCho($event)">
+                        <input type="file" name="filr" id="file" multiple @change="fileCho($event)">
+                        <ul>
+                            <li v-for="(fl,index) in filesListsss" v-bind:key="index">
+                                <a>{{fl.name}}</a>
+                                <el-button type="danger" size="mini" icon="el-icon-delete" @click="removeUpImg(index)"></el-button></li>
+                        </ul>
                     </div>
                 </el-form-item>
             </el-form>
@@ -52,48 +57,57 @@
 
         <el-dialog title="提示" :visible.sync="dialogVisible" width="800px" :before-close="handleClose">
         
-            <div class="layerBox">
+            <el-tabs v-model="activeName" @tab-click="handleClick">
+                    <el-tab-pane label="所有人员" name="allPeople">
+                        <div class="layerBox">
+                            <div class="shuttleBox">
+                                        <div class="leftBox">
+                                            <div class="topbar">
+                                                <el-cascader :options="mechanismList" change-on-select style="width:100%;" @change="lianjiCho" size="small"></el-cascader>
+                                            </div>
+                                            
+                                            <div class="shuttleBoxN">
+                                                <div class="searchBox"><el-input placeholder="输入关键字进行过滤" size="small" @change="leftSearch" v-model="filterTextL"></el-input></div>
+                                                <div class="peoList">
+                                                
+                                                <div  class="peoListM">
+                                                <el-checkbox-group v-model="checkedPeo" @change="handleCheckedPeoChange">
+                                                    <el-checkbox v-for="peo in peoList" :label="peo.userId" :key="peo.userId"><span style="display:inline-block; width:60px;">{{peo.userName}}</span>({{peo.unitName}}-{{peo.deptName}})</el-checkbox>
+                                                </el-checkbox-group>
+                                                </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="bts">
+                                            <el-button :type="anniuLX" round icon="el-icon-arrow-left" @click="uchoPeo"></el-button>
+                                            <el-button :type="anniuRX" round icon="el-icon-arrow-right" @click="choPeo"></el-button>
+                                        </div>
+                                        <div class="rightBox">
+                                            <div class="topbar"><h3>已选内容</h3></div>
+                                            <div class="shuttleBoxN">
+                                                <div class="searchBox"><el-input placeholder="输入关键字进行过滤" size="small" v-model="filterTextR"></el-input></div>
+                                                <div class="peoList">
+                                                    <div class="peoListM">
+                                                        <el-checkbox-group v-model="hcheckedPeo" @change="handleCheckedPeoChangeBack">
+                                                            <el-checkbox v-for="hpeo in havepeoList" :label="hpeo.userId" :key="hpeo.userId"><span style="display:inline-block; width:60px;">{{hpeo.userName}}</span>({{hpeo.unitName}}-{{hpeo.deptName}})</el-checkbox>
+                                                        </el-checkbox-group>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
 
-                <div class="shuttleBox">
+                                    </div>
+                        </div>
+                    </el-tab-pane>
+                    <el-tab-pane label="自定义组" name="customize">
+                        <el-checkbox :indeterminate="isIndeterminate" v-model="checkAll" @change="handleCheckAllChange">全选</el-checkbox>
+                            <div style="margin: 15px 0;"></div>
+                            <el-checkbox-group v-model="checkedCities" @change="handleCheckedCitiesChange">
+                                <el-checkbox v-for="city in cities" :label="city" :key="city">{{city}}</el-checkbox>
+                        </el-checkbox-group>
+                    </el-tab-pane>
                     
-                    <div class="leftBox">
-                        <div class="topbar">
-                            <el-cascader :options="mechanismList" change-on-select style="width:100%;" @change="lianjiCho" size="small"></el-cascader>
-                        </div>
-                        
-                        <div class="shuttleBoxN">
-                            <div class="searchBox"><el-input placeholder="输入关键字进行过滤" size="small" @change="leftSearch" v-model="filterTextL"></el-input></div>
-                            <div class="peoList">
-                            <!-- <el-checkbox :indeterminate="isIndeterminate" v-model="checkAll" @change="handleCheckAllChange">全选</el-checkbox> -->
-                            <div  class="peoListM">
-                            <el-checkbox-group v-model="checkedPeo" @change="handleCheckedPeoChange">
-                                <el-checkbox v-for="peo in peoList" :label="peo.userId" :key="peo.userId"><span style="display:inline-block; width:60px;">{{peo.userName}}</span>({{peo.unitName}}-{{peo.deptName}})</el-checkbox>
-                            </el-checkbox-group>
-                            </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="bts">
-                        <el-button :type="anniuLX" round icon="el-icon-arrow-left" @click="uchoPeo"></el-button>
-                        <el-button :type="anniuRX" round icon="el-icon-arrow-right" @click="choPeo"></el-button>
-                    </div>
-                    <div class="rightBox">
-                        <div class="topbar"><h3>已选内容</h3></div>
-                        <div class="shuttleBoxN">
-                            <div class="searchBox"><el-input placeholder="输入关键字进行过滤" size="small" v-model="filterTextR"></el-input></div>
-                            <div class="peoList">
-                                <div class="peoListM">
-                                    <el-checkbox-group v-model="hcheckedPeo" @change="handleCheckedPeoChangeBack">
-                                        <el-checkbox v-for="hpeo in havepeoList" :label="hpeo.userId" :key="hpeo.userId"><span style="display:inline-block; width:60px;">{{hpeo.userName}}</span>({{hpeo.unitName}}-{{hpeo.deptName}})</el-checkbox>
-                                    </el-checkbox-group>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                </div>
-
-            </div>
+                </el-tabs>
             <span slot="footer" class="dialog-footer">
                 <el-button @click="dialogVisible = false">取 消</el-button>
                 <el-button type="primary" @click="tijiao">确 定</el-button>
@@ -109,12 +123,9 @@ import {quillEditor} from "vue-quill-editor"; //调用编辑器
 import 'quill/dist/quill.core.css';
 import 'quill/dist/quill.snow.css';
 import 'quill/dist/quill.bubble.css';
-const peoOptions = [
-        {peoName:'张洋', uid:'u01', qjgid:'qjg01', xjgid:'xjg01',nxjgid:'njg01', schoolName:'徐州市第一中学',gradeName:'高一年级', groupName:'语文组'},     //uid:用户ID； qjgid:校ID；xjgid：学校年级ID；nxjgid：学科组ID
-        {peoName:'王帅', uid:'u02', qjgid:'qjg01',xjgid:'xjg01',nxjgid:'njg01', schoolName:'徐州市第一中学',gradeName:'高一年级', groupName:'语文组'},
-        {peoName:'赵承罡', uid:'u03', qjgid:'qjg01',xjgid:'xjg01',nxjgid:'njg01', schoolName:'徐州市第一中学',gradeName:'高一年级', groupName:'语文组'},
-        {peoName:'孙政', uid:'u04', qjgid:'qjg01',xjgid:'xjg01',nxjgid:'njg01', schoolName:'徐州市第一中学',gradeName:'高一年级', groupName:'语文组'}
-        ];
+
+const cityOptions = ['上海', '北京', '广州', '深圳'];
+
 export default {
     name:'newNotice',
     components:{
@@ -122,7 +133,10 @@ export default {
     },
     data() {
         return {
-            file:'',
+             checkAll: false,
+            checkedCities: ['上海', '北京'],
+            cities: cityOptions,
+            activeName:'allPeople',
             content:'cacacaca',
             editorOption:{},
             labelPosition:'right',
@@ -136,6 +150,7 @@ export default {
             },
             filesList: [],
             filesListss:[],
+            filesListsss:[],
             mechanismList:[                     //机构列表
                 {
                     label:'徐州市第二中学',value:'qjg01',jgid:'qjg01',
@@ -194,6 +209,18 @@ export default {
         // this.setData();
     },
     methods:{
+        handleCheckAllChange(val) {
+        this.checkedCities = val ? cityOptions : [];
+        this.isIndeterminate = false;
+      },
+      handleCheckedCitiesChange(value) {
+        let checkedCount = value.length;
+        this.checkAll = checkedCount === this.cities.length;
+        this.isIndeterminate = checkedCount > 0 && checkedCount < this.cities.length;
+      },
+        handleClick(tab, event) {
+            console.log(tab, event);
+        },
         backPage(){
             this.$router.back(-1)
         },
@@ -365,8 +392,6 @@ export default {
              console.log(me.huancunPeoList);
         },
         tijiao(){
-            // this.form.noticeUsers = this.havepeoList;
-            // this.form.noticeUsers = this.havepeoList
             let people = {}
             for(let i in this.havepeoList){
                 people.userId = this.havepeoList[i].userId;
@@ -388,14 +413,24 @@ export default {
 
         // 上传内容
         fileCho(event){
-            this.file = event.target.files[0];
-            console.log(this.file);
+            this.filesListss = event.target.files;
+            for(let i=0; i<this.filesListss.length; i++){
+                this.filesListsss.push(this.filesListss[i]);
+            }
+            console.log(this.filesListsss);
 
         },
         // 上传图片
 
+        // 取消上传的图片
+        removeUpImg(suoyin){
+            let me = this;
+            console.log(suoyin);
+            me.filesListsss.splice(suoyin,1);
+        },
+        // 取消上传的图片
         //最后上传按钮
-        xinjian(){
+        xinjian(){                  
             let me = this;
             let config = {
                 headers: { "Content-Type": "multipart/form-data" }
@@ -411,12 +446,11 @@ export default {
             bean.content = me.form.content;
 
             forms.append("noticeBean",JSON.stringify(bean));
-            for(let i in me.filesList) {
-                 forms.append("files",me.filesList[i]);
+            
+            for(let i in me.filesListsss){
+                let file = me.filesListsss[i];
+                data.append("files",file);
             }
-            // forms.append("files",me.filesList);
-            // let param=JSON.stringify(params);
-            // console.log(forms);
             me.$ajax
             .post(url,forms,config)
             .then(out => {

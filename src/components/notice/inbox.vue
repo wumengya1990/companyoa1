@@ -333,7 +333,7 @@ export default {
       intdetails(nuid){
           this.$router.push({
               name:'inboxdetails',
-              params:{noticeUserId:nuid}
+              params:{noticeUserId:"张三",year:'2019'}
           })
       }
     }
