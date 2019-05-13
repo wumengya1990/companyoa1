@@ -449,14 +449,15 @@ export default {
             
             for(let i in me.filesListsss){
                 let file = me.filesListsss[i];
-                data.append("files",file);
+                forms.append("files",file);
             }
             me.$ajax
             .post(url,forms,config)
             .then(out => {
             me.hw_result(out.data, true, me, () => {
-                console.log(out);
-                // me.peoList = out.data.result;
+                if(out.data.code=="S0000"){
+                    alert("成功");
+                }
                 });
             })
             .catch(error => {});
